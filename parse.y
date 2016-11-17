@@ -23,7 +23,7 @@
 %type <ast> opt_yield_test pick_yield_expr_testlist_comp yield_expr
 %type <ast> shift_expr xor_expr and_expr expr
 %type <ast> exec_stmt comparison
-%type <ast> not_test or_test and_test
+%type <ast> not_test or_test and_test opt_test test
 //pick_yield_expr_testlist_comp
 //yield_expr testlist
 // 83 tokens, in alphabetical order:
@@ -166,10 +166,19 @@ augassign // Used in: expr_stmt
 	;
 print_stmt // Used in: small_stmt
 	: PRINT opt_test
+          {
+            std::cout << eval($2) <<std::endl;
+            treeFree($2);
+          }
 	| PRINT RIGHTSHIFT test opt_test_2
 	;
 opt_test // Used in: print_stmt
-	: test star_COMMA_test
+	: test star_COMMA_test 
+          { 
+            //std::cout<<"opt_test"; 
+            //std::cout << "= "<<eval($1) <<std::endl;
+            //treeFree($1);
+          }
 	| %empty
 	;
 opt_test_2 // Used in: print_stmt
@@ -263,25 +272,12 @@ global_stmt // Used in: small_stmt, global_stmt
 	;
 exec_stmt // Used in: small_stmt
 	: EXEC expr IN test opt_COMMA_test
-          {/*
-            if(comingFromPar){
-              //$$ = new AstNode('Z', count, $1, NULL); count++;
-            }
-            else{
-              //$$ = new AstNode('Z', count, $1, NULL);
-              std::cout << "= in exec "<<eval($2) <<std::endl;
-              treeFree($2);
-            }*/            
+          {
+            //std::cout<<"exec_stmt\n";
           }
 	| EXEC expr
           {
-            //std::cout<<"Hello\n";
-            //if(comingFromPar){
-            //} else{
-            //std::cout << "= in exec "<<eval($2) <<std::endl;
-            //treeFree($2);
-            //}
-           std::cout << "= in exec "<<eval($2) <<std::endl;
+            //std::cout<<"exec_stmt\n";
           }
 	;
 assert_stmt // Used in: small_stmt
@@ -367,7 +363,9 @@ testlist_safe // Used in: list_for
 	| old_test
 	;
 old_test // Used in: testlist_safe, old_lambdef, list_if, comp_if, plus_COMMA_old_test
-	: or_test
+	: or_test { 
+            //std::cout<<"old_test\n";
+          }
 	| old_lambdef
 	;
 old_lambdef // Used in: old_test
@@ -381,7 +379,9 @@ test // Used in: opt_EQUAL_test, print_stmt, opt_test, raise_stmt,
      // opt_test_only, sliceop, testlist, dictorsetmaker, argument, 
      // testlist1, star_COMMA_test, star_test_COLON_test,
      // plus_COMMA_test, dictarg, listarg
-	: or_test opt_IF_ELSE
+	: or_test opt_IF_ELSE {
+            //std::cout<<"test\n";
+          }
 	| lambdef
 	;
 opt_IF_ELSE // Used in: test
@@ -390,37 +390,25 @@ opt_IF_ELSE // Used in: test
 	;
 or_test // Used in: old_test, test, opt_IF_ELSE, or_test, comp_for
 	: and_test
-          {
-            //$$ = new AstNode('Z', count, $1, NULL); count++;
-            //if(comingFromPar){
-            //}else{
-            //std::cout << "= in exec "<<eval($1) <<std::endl;
-            //treeFree($1);
-            //}
+          { //std::cout<<"or test\n";
           }
 	| or_test OR and_test
 	;
 and_test // Used in: or_test, and_test
 	: not_test
-          {
-            //$$ = new AstNode('Z', count, $1, NULL); count++;
+          { //std::cout<<"and_test\n";
           }
 	| and_test AND not_test
 	;
 not_test // Used in: and_test, not_test
 	: NOT not_test
 	| comparison
-          {
-            //$$ = new AstNode('Z', count, $1, NULL); count++;
+          { //std::cout<<"not_test\n";
           }
 	;
 comparison // Used in: not_test, comparison
 	: expr 
-          { 
-            //std::cout<<"Comparison\n"<<std::endl;
-            //std::cout << "= in exec "<<eval($1) <<std::endl;
-            //treeFree($1);
-            //$$ = new AstNode('Z', count, $1, NULL); count++; 
+          { //std::cout<<"Comparison\n"; 
           }
 	| comparison comp_op expr
 	;
@@ -445,52 +433,34 @@ expr // Used in: exec_stmt, with_item, comparison, expr,
             //std::cout<<"In expr\n";
              if(comingFromPar){
                comingFromPar = false;
-               std::cout << "= "<<eval($1) <<std::endl;
-               //treeFree($1);
-             }
-             else{
-               //std::cout<<$1<<std::endl;
-               //std::fstream output;
-               //output.open("graph.gv", std::ios::out);
-               //output<< "digraph G {"<<std::endl;
-               //output<< "node [shape=record];"<<std::endl;
-               //makeGraph($1, output);
-               //output << "}" <<std::endl;
-               //output.close();
                //std::cout << "= "<<eval($1) <<std::endl;
                //treeFree($1);
-               //std::cout<<"> ";
+              //$$ = new AstNode('Z', count, $1, NULL);
              }
-             //treeFree($1);
-             //$$ = new AstNode('Z', count, $1, NULL); count++;
+             else{
+               //std::cout << "= "<<eval($1) <<std::endl;
+               //treeFree($1);
+             }
+             //$$ = new AstNode('Z', count, $1, NULL);
           }
-	| expr BAR xor_expr
+	| expr BAR xor_expr{
+          }
 	;
 xor_expr // Used in: expr, xor_expr
 	: and_expr 
           { 
-            //$$ = new AstNode('Z', count, $1, NULL); 
           }
 	| xor_expr CIRCUMFLEX and_expr
 	;
 and_expr // Used in: xor_expr, and_expr
 	: shift_expr  
           { 
-            //$$ = new AstNode('Z', count, $1, NULL);
           }
 	| and_expr AMPERSAND shift_expr
 	;
 shift_expr // Used in: and_expr, shift_expr
 	: arith_expr 
           { 
-            //if(comingFromPar){
-              //$$ = new AstNode('Z', count, $1, NULL); count++;
-            //} 
-            //else{          
-              //$$ = new AstNode('Z', count, $1, NULL);
-             // std::cout << "= "<<eval($1) <<std::endl;
-             // treeFree($1); 
-            //}
           }
 	| shift_expr pick_LEFTSHIFT_RIGHTSHIFT arith_expr 
           {
@@ -537,14 +507,8 @@ term // Used in: arith_expr, term
               mult = false;
             }
             else if(division){
-              if($3 != 0){
                 //$$ = floor((float)$1 / (float)$3);
                 $$ = new AstNode('/', count, $1, $3); count++;
-              } 
-              else{
-                //$$ = 0;
-                std::cout<<"ZeroDivisionError: integer division or modulo by zero"<<std::endl;
-              }
               //std::cout<<"EXECUTE DIV"<<division<<std::endl;
               division = false;
             }
@@ -560,14 +524,8 @@ term // Used in: arith_expr, term
               modulus = false;
             }
             else if(dSlash){
-              if($3 != 0){
                 //$$ = floor((float)$1/(float)$3);
                 $$ = new AstNode('D', count, $1, $3); count++;
-              }
-              else{
-                //$$ = 0;
-              }
-              //std::cout<<"EXECUTE DOUBLESLASH"<<$$<<std::endl;
               dSlash = false;
             }
           }
@@ -640,7 +598,7 @@ star_trailer // Used in: power, star_trailer
 atom // Used in: power
 	: LPAR opt_yield_test RPAR 
           { 
-            std::cout<<"In atom\n";
+            //std::cout<<"In atom\n";
             $$ = $2; 
             //$$ = new AstNode('R', count, $2, NULL); count++;
             //$$ = new AstNumber('K', count, $2); count++;

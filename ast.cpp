@@ -26,11 +26,25 @@ double eval(Ast *a) {
   case '+': v = eval(a->getLeft()) + eval(a->getRight()); break;
   case '-': v = eval(a->getLeft()) - eval(a->getRight()); break;
   case '*': v = eval(a->getLeft()) * eval(a->getRight()); break;
-  case '/': v = eval(a->getLeft()) / eval(a->getRight()); break;
+  case '/':     
+            if(eval(a->getRight())!= 0) { 
+              v = floor((float)eval(a->getLeft()) / (float)eval(a->getRight())); 
+            }else{
+              std::cout<<"Division by Zero\n";
+            }
+            break;
+  case 'D':
+            if(eval(a->getRight())!= 0) {
+              v = floor((float)eval(a->getLeft()) / (float)eval(a->getRight()));
+            }else{
+              std::cout<<"Division by Zero\n";
+            }
+            break;
   case '%': v = fmod(eval(a->getLeft()), eval(a->getRight())); break;
   case 'E': v = pow( eval(a->getLeft()), eval(a->getRight())); break;
   case 'M': v = -eval(a->getLeft()); break;
-  case 'Z': v = eval(a->getLeft()); break;
+  case 'P': v = eval(a->getLeft()); break;
+  case 'Z': std::cout<<"Division by zero\n";break;
   default: std::cout << "internal error: bad node "
                 << a->getNodetype() << std::endl;;
   }
@@ -80,10 +94,12 @@ void treeFree(Ast *a) {
   case '/':
   case 'E':
   case '%':
+  case 'D':
     treeFree(a->getRight());
 
    // one subtrees
   case 'M':
+  case 'P':
     treeFree(a->getLeft());
 
    //no subtree
