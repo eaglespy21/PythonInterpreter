@@ -46,6 +46,16 @@ private:
   double number;
 };
 
+class AstInt: public Ast{
+public:
+  AstInt(char nodetype, int num, std::string name_arg): Ast(nodetype, num), name(name_arg) {}
+  virtual ~AstInt() {}
+  //virtual double getNumber() const { return number; }
+  std::string getName() const { return name; }
+private:
+  std::string name;
+};
+
 double eval(Ast*);   // Evaluate an AST
 void treeFree(Ast*); // delete and free an AST 
 void makeGraph(const Ast *a, std::fstream& output);

@@ -251,7 +251,10 @@ comment   #.*
              return NUMBER; 
            }
 {name}     { 
-             ++identifiers; 
+             ++identifiers;
+             //std::cout<<"Variable\n"; 
+             yylval.s = strndup(yytext,yyleng);
+             //std::cout<<strndup(yytext,yyleng);
              return NAME; 
            }
 

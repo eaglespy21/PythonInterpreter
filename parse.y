@@ -4,6 +4,7 @@
   #include <math.h>
   #include "ast.h"
   #include<fstream>
+  #include<string.h>
 	int yylex (void);
 	extern int yylineno;
 	extern char *yytext;
@@ -16,14 +17,16 @@
 
 %union {
   Ast* ast;
-  double d;
+  double d; 
+  char* s; //Do we create a type class?
 }
 %token <d> NUMBER
-%type <ast> arith_expr term factor atom power 
-%type <ast> opt_yield_test pick_yield_expr_testlist_comp yield_expr
-%type <ast> shift_expr xor_expr and_expr expr
-%type <ast> exec_stmt comparison
-%type <ast> not_test or_test and_test opt_test test
+%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test
+%token <s> NAME
+//pick_yield_expr_testlist_comp yield_expr
+//shift_expr xor_expr and_expr expr
+//exec_stmt comparison
+//not_test and_test opt_test test
 //pick_yield_expr_testlist_comp
 //yield_expr testlist
 // 83 tokens, in alphabetical order:
@@ -33,7 +36,7 @@
 %token DOUBLESTAR DOUBLESTAREQUAL ELIF ELSE ENDMARKER EQEQUAL
 %token EQUAL EXCEPT EXEC FINALLY FOR FROM GLOBAL GREATER GREATEREQUAL GRLT
 %token IF IMPORT IN INDENT IS LAMBDA LBRACE LEFTSHIFT LEFTSHIFTEQUAL LESS
-%token LESSEQUAL LPAR LSQB MINEQUAL MINUS NAME NEWLINE NOT NOTEQUAL
+%token LESSEQUAL LPAR LSQB MINEQUAL MINUS NEWLINE NOT NOTEQUAL
 %token OR PASS PERCENT PERCENTEQUAL PLUS PLUSEQUAL PRINT RAISE 
 %token RBRACE RETURN RIGHTSHIFT RIGHTSHIFTEQUAL RPAR RSQB 
 %token SEMI SLASH SLASHEQUAL STAR STAREQUAL
@@ -95,14 +98,14 @@ parameters // Used in: funcdef
 	;
 varargslist // Used in: parameters, old_lambdef, lambdef
 	: star_fpdef_COMMA pick_STAR_DOUBLESTAR
-	| fpdef opt_EQUAL_test star_COMMA_fpdef
+	| fpdef opt_EQUAL_test star_COMMA_fpdef {std::cout<<"varaglist\n";}
 	;
 opt_EQUAL_test // Used in: varargslist, star_fpdef_COMMA, star_COMMA_fpdef
-	: EQUAL test
+	: EQUAL test {std::cout<<"EQUAL\n";}
 	| %empty
 	;
 star_fpdef_COMMA // Used in: varargslist, star_fpdef_COMMA
-	: fpdef opt_EQUAL_test COMMA star_fpdef_COMMA
+	: fpdef opt_EQUAL_test COMMA star_fpdef_COMMA {std::cout<<"star_fpdef\n";}
 	| %empty
 	;
 opt_DOUBLESTAR_NAME // Used in: pick_STAR_DOUBLESTAR
@@ -140,27 +143,33 @@ small_stmt // Used in: simple_stmt, small_stmt_STAR_OR_SEMI
 	;
 expr_stmt // Used in: small_stmt
 	: testlist augassign pick_yield_expr_testlist
-	| testlist star_EQUAL
+	| testlist star_EQUAL 
+          {
+            //std::cout<<"expr_stmt\n";
+          }
 	;
 pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
 	: yield_expr
 	| testlist
 	;
 star_EQUAL // Used in: expr_stmt, star_EQUAL
-	: EQUAL pick_yield_expr_testlist star_EQUAL
+	: EQUAL pick_yield_expr_testlist star_EQUAL 
+          {
+            //std::cout<<"star_EQ"<<std::endl;
+          }
 	| %empty
 	;
 augassign // Used in: expr_stmt
-	: PLUSEQUAL
+	: PLUSEQUAL {std::cout<<"PLUSEQ\n";}
 	| MINEQUAL
 	| STAREQUAL
 	| SLASHEQUAL
 	| PERCENTEQUAL
 	| AMPEREQUAL
-	| VBAREQUAL
-	| CIRCUMFLEXEQUAL
-	| LEFTSHIFTEQUAL
-	| RIGHTSHIFTEQUAL
+	| VBAREQUAL { std::cout<<"VBARE\n"; }
+	| CIRCUMFLEXEQUAL {std::cout<<"CIRCUM\n";}
+	| LEFTSHIFTEQUAL {std::cout<<"LEFTS\n";}
+	| RIGHTSHIFTEQUAL {std::cout<<"RIGHTS\n";}
 	| DOUBLESTAREQUAL
 	| DOUBLESLASHEQUAL
 	;
@@ -380,7 +389,7 @@ test // Used in: opt_EQUAL_test, print_stmt, opt_test, raise_stmt,
      // testlist1, star_COMMA_test, star_test_COLON_test,
      // plus_COMMA_test, dictarg, listarg
 	: or_test opt_IF_ELSE {
-            //std::cout<<"test\n";
+            //std::cout<<"test"<<$1<<std::endl;
           }
 	| lambdef
 	;
@@ -609,13 +618,16 @@ atom // Used in: power
 	| LSQB opt_listmaker RSQB
 	| LBRACE opt_dictorsetmaker RBRACE
 	| BACKQUOTE testlist1 BACKQUOTE
-	| NAME
+	| NAME 
+          { 
+            std::cout<<$1<<std::endl;
+          }
 	| NUMBER 
           {
             //std::cout<<"Reached atom"<<std::endl; 
             $$ = new AstNumber('K',count, $1); count++; 
           }
-	| plus_STRING
+	| plus_STRING {std::cout<<"PLUS IN ATOM\n";}
 	;
 pick_yield_expr_testlist_comp // Used in: opt_yield_test
 	: yield_expr 
@@ -642,8 +654,8 @@ opt_dictorsetmaker // Used in: atom
 	| %empty
 	;
 plus_STRING // Used in: atom, plus_STRING
-	: STRING plus_STRING
-	| STRING
+	: STRING plus_STRING { std::cout <<"STRINGPLUS\n";}
+	| STRING {std::cout<<"STRING\n";}
 	;
 listmaker // Used in: opt_listmaker
 	: test list_for
@@ -687,7 +699,10 @@ exprlist // Used in: del_stmt, for_stmt, list_for, comp_for
 	;
 testlist // Used in: expr_stmt, pick_yield_expr_testlist, 
          // return_stmt, for_stmt, opt_testlist, yield_expr
-	: test star_COMMA_test
+	: test star_COMMA_test 
+          {
+            //std::cout<<"testlist"<<$1<<std::endl;
+          }
 	;
 dictorsetmaker // Used in: opt_dictorsetmaker
 	: test COLON test pick_comp_for
@@ -699,7 +714,7 @@ pick_comp_for // Used in: dictorsetmaker
 	;
 pick_for_test // Used in: dictorsetmaker
 	: comp_for
-	| star_COMMA_test
+	| star_COMMA_test {std::cout<<"star_COMMA\n";}
 	;
 classdef // Used in: decorated, compound_stmt
 	: CLASS NAME LPAR opt_testlist RPAR COLON suite
@@ -719,7 +734,7 @@ arglist // Used in: opt_arglist, arglist
 	;
 argument // Used in: arglist, arglist_postlist
 	: test opt_comp_for
-	| test EQUAL test
+	| test EQUAL test {std::cout<<"argument\n";} 
 	;
 opt_comp_for // Used in: argument
 	: comp_for
@@ -779,12 +794,12 @@ star_COMMA_expr // Used in: exprlist, star_COMMA_expr
 	| %empty
 	;
 star_COMMA_fpdef // Used in: varargslist, star_COMMA_fpdef
-	: COMMA fpdef opt_EQUAL_test star_COMMA_fpdef
+	: COMMA fpdef opt_EQUAL_test star_COMMA_fpdef {std::cout<<"star_comma\n";}
 	| COMMA
 	| %empty
 	;
 star_COMMA_test // Used in: opt_test, listmaker, testlist_comp, testlist, pick_for_test, star_COMMA_test
-	: COMMA test star_COMMA_test
+	: COMMA test star_COMMA_test {std::cout<<"Star_COMMA\n";}
 	| COMMA
 	| %empty
 	;
