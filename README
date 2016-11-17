@@ -1,0 +1,17 @@
+Name:
+Clemson Email Address: shindle@g.clemson.edu
+Course number: 8270
+
+Project no: 4
+Project due date: 10-28-2016
+
+Project description: insert semantic actions into python parser
+
+Difficulties: not many 
+
+Extra: 
+testArith.py is the testHarness to use it is similar to the last project. 
+cases/ contains all the test cases including division by zero, integer division floors 
+alltests.py is to check if all the python test cases pass and they do. 
+Special test cases like +++1 and ---1 are taken care of 
+
