@@ -48,13 +48,26 @@ private:
 
 class AstInt: public Ast{
 public:
-  AstInt(char nodetype, int num, std::string name_arg): Ast(nodetype, num), name(name_arg) {}
+  AstInt(char nodetype, int num, std::string name_arg, int n): Ast(nodetype, num), name(name_arg), number(n) {}
   virtual ~AstInt() {}
-  //virtual double getNumber() const { return number; }
+  virtual double getNumber() const { return number; } //Have to cast this to int while calling
   std::string getName() const { return name; }
 private:
   std::string name;
+  int number;
 };
+
+class AstFloat: public Ast{
+public:
+  AstFloat(char nodetype, float num, std::string name_arg, int n): Ast(nodetype, num), name(name_arg), number(n) {}
+  virtual ~AstFloat() {}
+  virtual double getNumber() const { return number; }
+  std::string getName() const { return name; }
+private:
+  std::string name;
+  double number;
+};
+
 
 double eval(Ast*);   // Evaluate an AST
 void treeFree(Ast*); // delete and free an AST 
