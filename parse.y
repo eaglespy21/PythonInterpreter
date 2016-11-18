@@ -2,7 +2,9 @@
 %{
   #include <iostream>
   #include <math.h>
-  #include "ast.h"
+  #include "symbolTable.h"
+
+//  #include "ast.h"
   #include<fstream>
   #include<string.h>
 	int yylex (void);
@@ -13,6 +15,8 @@
         bool dSlash = false, uPlus = false, uNeg = false, comingFromPar = false;
         int uNegCount = 0, uPlusCount = 0;
 	void yyerror (char const *);
+        std::string identName;
+        SymbolTable& symTab = SymbolTable::getInstance();
 %}
 
 %union {
@@ -20,8 +24,8 @@
   double d; 
   char* s; //Do we create a type class?
 }
-%token <d> NUMBER
-%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test
+%token <d> NUMBER 
+%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -49,7 +53,7 @@
 
 start
 	: file_input
-	| encoding_decl
+	| encoding_decl {std::cout<<"Hello\n";}
 	| single_input
 	;
 //single_input // Used in: start
@@ -155,7 +159,9 @@ pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
 star_EQUAL // Used in: expr_stmt, star_EQUAL
 	: EQUAL pick_yield_expr_testlist star_EQUAL 
           {
-            //std::cout<<"star_EQ"<<std::endl;
+            std::cout<<"star_EQ"<<std::endl;
+            std::cout<<$2->getNumber()<<std::endl;
+            symTab.insert($2->getNumber(), identName, "Int");
           }
 	| %empty
 	;
@@ -504,7 +510,9 @@ pick_PLUS_MINUS // Used in: arith_expr
 	| MINUS {subtract = true;}
 	;
 term // Used in: arith_expr, term
-	: factor
+	: factor {  
+            //std::cout<<"Term\n";
+            }
 	| term pick_multop factor
           {
             //std::cout<<"EXECUTE DOUBLESLASH"<<dSlash<<std::endl;
@@ -537,6 +545,7 @@ term // Used in: arith_expr, term
                 $$ = new AstNode('D', count, $1, $3); count++;
               dSlash = false;
             }
+            std::cout<<"Term\n";
           }
 	;
 pick_multop // Used in: term
@@ -596,6 +605,7 @@ power // Used in: factor
           }
 	| atom star_trailer 
           {
+            //std::cout<<$2<<std::endl;
             //$$ = new AstNode('Z', count, $1, NULL); count++;
             //std::cout<<"in power"<<$$<<std::endl;
           }
@@ -620,6 +630,7 @@ atom // Used in: power
 	| BACKQUOTE testlist1 BACKQUOTE
 	| NAME 
           { 
+            identName = $1; 
             std::cout<<$1<<std::endl;
           }
 	| NUMBER 
@@ -770,7 +781,7 @@ testlist1 // Used in: atom, testlist1
 	| testlist1 COMMA test
 	;
 encoding_decl // Used in: start
-	: NAME
+	: NAME {std::cout<<"Encoding_decl\n";}
 	;
 yield_expr // Used in: pick_yield_expr_testlist, yield_stmt, 
            // pick_yield_expr_testlist_comp
