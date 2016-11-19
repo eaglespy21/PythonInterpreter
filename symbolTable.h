@@ -6,6 +6,7 @@ public:
   static SymbolTable& getInstance();
   void insert(double v, std::string n, std::string t);
   Ast* lookUp(std::string n, int nodeNum);
+  bool ifExists(std::string n);
 private:
   SymbolTable(const SymbolTable&);
   SymbolTable& operator=(const SymbolTable&);

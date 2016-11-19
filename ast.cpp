@@ -23,6 +23,8 @@ double eval(Ast *a) {
   double v = 0;
   switch( a->getNodetype() ) {
   case 'K': v = a->getNumber(); break;
+  case 'I': v = (int)a->getNumber(); break;
+  case 'F': v = (double)a->getNumber(); break;
   case '+': v = eval(a->getLeft()) + eval(a->getRight()); break;
   case '-': v = eval(a->getLeft()) - eval(a->getRight()); break;
   case '*': v = eval(a->getLeft()) * eval(a->getRight()); break;
@@ -105,6 +107,8 @@ void treeFree(Ast *a) {
    //no subtree
   case 'K':
   case 'Z':
+  case 'I':
+  case 'F':
     delete a;
     break;
 

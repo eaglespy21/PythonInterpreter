@@ -22,6 +22,14 @@ Ast* SymbolTable::lookUp(std::string n, int nodeNum){
     return NULL;
   }
 }
+bool SymbolTable::ifExists(std::string n){
+  if(entryList.find(n) == entryList.end()){
+    return false;
+  }
+  else{
+    return true;
+  }
+}
 /*
 SymbolTable::Entry& SymbolTable::Entry::operator=(const SymbolTable::Entry& ent){
   if(*this == ent){

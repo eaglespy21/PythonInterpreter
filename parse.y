@@ -159,8 +159,8 @@ pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
 star_EQUAL // Used in: expr_stmt, star_EQUAL
 	: EQUAL pick_yield_expr_testlist star_EQUAL 
           {
-            std::cout<<"star_EQ"<<std::endl;
-            std::cout<<$2->getNumber()<<std::endl;
+            //std::cout<<"star_EQ"<<std::endl;
+            //std::cout<<$2->getNumber()<<std::endl;
             symTab.insert($2->getNumber(), identName, "Int");
           }
 	| %empty
@@ -545,7 +545,7 @@ term // Used in: arith_expr, term
                 $$ = new AstNode('D', count, $1, $3); count++;
               dSlash = false;
             }
-            std::cout<<"Term\n";
+            //std::cout<<"Term\n";
           }
 	;
 pick_multop // Used in: term
@@ -630,8 +630,14 @@ atom // Used in: power
 	| BACKQUOTE testlist1 BACKQUOTE
 	| NAME 
           { 
-            identName = $1; 
-            std::cout<<$1<<std::endl;
+            if(symTab.ifExists($1)){
+              $$ = symTab.lookUp($1, count); count++;
+              //$$ = new AstNumber('K',count, ); count++; 
+            }
+            else{  
+              identName = $1; 
+              //std::cout<<$1<<std::endl;
+            }
           }
 	| NUMBER 
           {
