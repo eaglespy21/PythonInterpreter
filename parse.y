@@ -3,7 +3,7 @@
   #include <iostream>
   #include <math.h>
   #include "symbolTable.h"
-
+  #include <cmath>
 //  #include "ast.h"
   #include<fstream>
   #include<string.h>
@@ -22,9 +22,11 @@
 %union {
   Ast* ast;
   double d; 
+  int i;
   char* s; //Do we create a type class?
 }
-%token <d> NUMBER 
+%token <d> FLOAT
+%token <i> INT 
 %type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
@@ -159,9 +161,19 @@ pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
 star_EQUAL // Used in: expr_stmt, star_EQUAL
 	: EQUAL pick_yield_expr_testlist star_EQUAL 
           {
-            //std::cout<<"star_EQ"<<std::endl;
-            //std::cout<<$2->getNumber()<<std::endl;
-            symTab.insert($2->getNumber(), identName, "Int");
+            //std::cout<<"star_EQ"<<$2->getNumber()<<std::endl;
+            double num = $2->getNumber();
+            if($2->getNodetype() == 'I'){  
+              //std::cout<<"Insert Int\n";
+              symTab.insert($2->getNumber(), identName, "Int");
+            }
+            else if($2->getNodetype() == 'F'){
+              //std::cout<<"Insert Float\n";
+              symTab.insert($2->getNumber(), identName, "Float");
+            } 
+            else{
+              std::cout<<"Wrong data type\n";
+            }
           }
 	| %empty
 	;
@@ -632,6 +644,7 @@ atom // Used in: power
           { 
             if(symTab.ifExists($1)){
               $$ = symTab.lookUp($1, count); count++;
+              //std::cout<<"In atom="<<$$->getNumber()<<std::endl;
               //$$ = new AstNumber('K',count, ); count++; 
             }
             else{  
@@ -639,11 +652,16 @@ atom // Used in: power
               //std::cout<<$1<<std::endl;
             }
           }
-	| NUMBER 
+	| FLOAT 
           {
+            //std::cout<<"Float value="<<$1<<std::endl;
             //std::cout<<"Reached atom"<<std::endl; 
-            $$ = new AstNumber('K',count, $1); count++; 
+            $$ = new AstFloat('F',count, "temp", $1); count++; //This node gets discarded anyways, temp node 
           }
+        | INT
+          {
+            $$ = new AstInt('I',count, "temp", $1); count++; //This node gets discarded anyways, temp node 
+          } 
 	| plus_STRING {std::cout<<"PLUS IN ATOM\n";}
 	;
 pick_yield_expr_testlist_comp // Used in: opt_yield_test

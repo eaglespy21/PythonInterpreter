@@ -59,7 +59,7 @@ private:
 
 class AstFloat: public Ast{
 public:
-  AstFloat(char nodetype, float num, std::string name_arg, int n): Ast(nodetype, num), name(name_arg), number(n) {}
+  AstFloat(char nodetype, int num, std::string name_arg, double n): Ast(nodetype, num), name(name_arg), number(n) {}
   virtual ~AstFloat() {}
   virtual double getNumber() const { return number; }
   std::string getName() const { return name; }

@@ -244,12 +244,19 @@ comment   #.*
 "with"     { return WITH; }
 "yield"    { return YIELD; }
 
-{number}   { 
+{integer}|{longinteger}	{ 
              ++numbers;
              //std::cout<<"In scan.l"<<std::endl; 
-             yylval.d = atof(yytext); 
-             return NUMBER; 
+             yylval.i = atof(yytext); 
+             //std::cout<<"Int in scan\n";
+             return INT; 
            }
+{floatnumber}	{
+                //std::cout<<"Float in scan\n";
+		yylval.d = atof(yytext);
+                //std::cout<<"yylval.d="<<yylval.d<<std::endl;
+                return FLOAT;
+                }
 {name}     { 
              ++identifiers;
              //std::cout<<"Variable\n"; 

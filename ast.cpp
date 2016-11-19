@@ -22,7 +22,7 @@ namespace patch
 double eval(Ast *a) {
   double v = 0;
   switch( a->getNodetype() ) {
-  case 'K': v = a->getNumber(); break;
+  //case 'K': v = a->getNumber(); break;
   case 'I': v = (int)a->getNumber(); break;
   case 'F': v = (double)a->getNumber(); break;
   case '+': v = eval(a->getLeft()) + eval(a->getRight()); break;
@@ -30,7 +30,7 @@ double eval(Ast *a) {
   case '*': v = eval(a->getLeft()) * eval(a->getRight()); break;
   case '/':     
             if(eval(a->getRight())!= 0) { 
-              v = floor((float)eval(a->getLeft()) / (float)eval(a->getRight())); 
+              v = (float)eval(a->getLeft()) / (float)eval(a->getRight()); 
             }else{
               std::cout<<"Division by Zero\n";
             }

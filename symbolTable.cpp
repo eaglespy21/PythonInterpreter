@@ -7,6 +7,7 @@ SymbolTable& SymbolTable:: getInstance(){
   return instance;
 }
 void SymbolTable:: insert(double v, std::string n, std::string t){
+  //std::cout<<"In symtab="<<v<<std::endl;
   entryList[n] = new Entry(v,n,t);
   //entryList.insert(std::pair<std::string, Entry*>(n, new Entry(v,n,t)));
 }
@@ -15,7 +16,7 @@ Ast* SymbolTable::lookUp(std::string n, int nodeNum){
     return new AstInt('I', nodeNum, entryList[n]->getName(), (int)entryList[n]->getValue());
   }
   else if( entryList[n]->getType() == "Float"){
-    return new AstFloat('F', nodeNum, entryList[n]->getName(), (int)entryList[n]->getValue());
+    return new AstFloat('F', nodeNum, entryList[n]->getName(), (double)entryList[n]->getValue());
   }
   else{
     std::cout<<"Wrong dataType\n";
