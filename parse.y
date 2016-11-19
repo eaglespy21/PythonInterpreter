@@ -164,6 +164,22 @@ expr_stmt // Used in: small_stmt
               val_exp_st -=  rhs;
               eSub = false;
             }
+            else if(eMult){
+              val_exp_st *= rhs;
+              eMult = false;
+            }
+            else if(eDiv){
+              val_exp_st /= rhs;
+              eDiv = false;
+            }
+            else if(eMod){
+              val_exp_st = (int)val_exp_st%(int)rhs;
+              eMod = false;
+            }
+            else if(eDSlash){
+              val_exp_st = floor(val_exp_st/rhs);
+              eDSlash = false;
+            }
             symTab.modifyEntry(val_exp_st, $1->getName());
             //symTab.insert(val_exp_st, $1->getName(), $1->getDataType());
             //$$ = symTab.lookUp($1->getName(), count); count++;
