@@ -13,6 +13,7 @@
         extern int count;
         bool add=false,subtract=false, mult=false, division=false, powe=false, modulus=false;
         bool dSlash = false, uPlus = false, uNeg = false, comingFromPar = false;
+        bool eAdd=false, eSub=false, eMult=false, eDiv=false, eMod=false, eDSlash=false;
         int uNegCount = 0, uPlusCount = 0;
 	void yyerror (char const *);
         std::string identName;
@@ -27,7 +28,7 @@
 }
 %token <d> FLOAT
 %token <i> INT 
-%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist
+%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -148,7 +149,25 @@ small_stmt // Used in: simple_stmt, small_stmt_STAR_OR_SEMI
 	| assert_stmt
 	;
 expr_stmt // Used in: small_stmt
-	: testlist augassign pick_yield_expr_testlist
+	: testlist augassign pick_yield_expr_testlist 
+          { 
+            //std::cout<<$1->getNumber()<<" rhs "<<$3->getNumber()<<std::endl; 
+            double val_exp_st = $1->getNumber();
+            double rhs = $3->getNumber();
+            if(eAdd)
+            {
+              val_exp_st += rhs;
+              eAdd = false;
+            }
+            else if(eSub)
+            {
+              val_exp_st -=  rhs;
+              eSub = false;
+            }
+            symTab.modifyEntry(val_exp_st, $1->getName());
+            //symTab.insert(val_exp_st, $1->getName(), $1->getDataType());
+            //$$ = symTab.lookUp($1->getName(), count); count++;
+          } 
 	| testlist star_EQUAL 
           {
             //std::cout<<"expr_stmt\n";
@@ -178,18 +197,18 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
 	| %empty
 	;
 augassign // Used in: expr_stmt
-	: PLUSEQUAL {std::cout<<"PLUSEQ\n";}
-	| MINEQUAL
-	| STAREQUAL
-	| SLASHEQUAL
-	| PERCENTEQUAL
+	: PLUSEQUAL { eAdd = true;}
+	| MINEQUAL  { eSub = true;}
+	| STAREQUAL { eMult = true;}
+	| SLASHEQUAL {eDiv = true;}
+	| PERCENTEQUAL {eMod = true;}
 	| AMPEREQUAL
 	| VBAREQUAL { std::cout<<"VBARE\n"; }
 	| CIRCUMFLEXEQUAL {std::cout<<"CIRCUM\n";}
 	| LEFTSHIFTEQUAL {std::cout<<"LEFTS\n";}
 	| RIGHTSHIFTEQUAL {std::cout<<"RIGHTS\n";}
 	| DOUBLESTAREQUAL
-	| DOUBLESLASHEQUAL
+	| DOUBLESLASHEQUAL {eDSlash = true;}
 	;
 print_stmt // Used in: small_stmt
 	: PRINT opt_test

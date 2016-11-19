@@ -19,6 +19,8 @@ public:
 				return NULL; }
   virtual double getNumber() const { //throw std::string("No Number");
 				return NULL; }
+  virtual std::string getName() const { return "No Name";}
+  virtual std::string getDataType() const { return "No DataType";}
 private:
   char nodetype;
   int nodeNumber;
@@ -32,6 +34,8 @@ public:
   virtual ~AstNode() {}
   virtual Ast* getLeft() const  { return left; }
   virtual Ast* getRight() const { return right; }
+  virtual std::string getName() const { return "No Name";}
+  virtual std::string getDataType() const { return "No DataType";}
 private:
   Ast *left;
   Ast *right;
@@ -42,6 +46,7 @@ public:
   AstNumber(char nodetype, int num, double n) : Ast(nodetype, num), number(n) {} 
   virtual ~AstNumber() {}
   virtual double getNumber() const { return number; }
+  virtual std::string getDataType() const { return "Number"; }
 private:
   double number;
 };
@@ -51,7 +56,8 @@ public:
   AstInt(char nodetype, int num, std::string name_arg, int n): Ast(nodetype, num), name(name_arg), number(n) {}
   virtual ~AstInt() {}
   virtual double getNumber() const { return number; } //Have to cast this to int while calling
-  std::string getName() const { return name; }
+  virtual std::string getName() const { return name; }
+  virtual std::string getDataType() const { return "Int"; }
 private:
   std::string name;
   int number;
@@ -62,7 +68,8 @@ public:
   AstFloat(char nodetype, int num, std::string name_arg, double n): Ast(nodetype, num), name(name_arg), number(n) {}
   virtual ~AstFloat() {}
   virtual double getNumber() const { return number; }
-  std::string getName() const { return name; }
+  virtual std::string getName() const { return name; }
+  virtual std::string getDataType() const { return "Float"; }
 private:
   std::string name;
   double number;

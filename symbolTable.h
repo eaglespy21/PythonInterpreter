@@ -7,6 +7,7 @@ public:
   void insert(double v, std::string n, std::string t);
   Ast* lookUp(std::string n, int nodeNum);
   bool ifExists(std::string n);
+  void modifyEntry(double v, std::string n);
 private:
   SymbolTable(const SymbolTable&);
   SymbolTable& operator=(const SymbolTable&);
@@ -21,6 +22,7 @@ private:
     double getValue() const;
     std::string getName() const;
     std::string getType() const;
+    void setValue(double v);
   private:
     double value;
     std::string name;

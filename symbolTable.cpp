@@ -11,6 +11,9 @@ void SymbolTable:: insert(double v, std::string n, std::string t){
   entryList[n] = new Entry(v,n,t);
   //entryList.insert(std::pair<std::string, Entry*>(n, new Entry(v,n,t)));
 }
+void SymbolTable:: modifyEntry(double v, std::string n){
+  entryList[n]->setValue(v); //Write setter
+}
 Ast* SymbolTable::lookUp(std::string n, int nodeNum){
   if(entryList[n]->getType() == "Int"){
     return new AstInt('I', nodeNum, entryList[n]->getName(), (int)entryList[n]->getValue());
@@ -52,4 +55,7 @@ std::string SymbolTable::Entry::getType() const{
 }
 double SymbolTable::Entry::getValue() const{
   return value;
-} 
+}
+void SymbolTable::Entry::setValue(double v){
+  value = v;
+}
