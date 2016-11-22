@@ -1918,7 +1918,7 @@ yyreduce:
             else{
               std::cout<<"Wrong data type"<<(yyvsp[-1].ast)->getNodetype()<<std::endl;
             }
-            (yyval.ast) = new AstNode('P', count, (yyvsp[-1].ast), NULL); 
+            //$$ = new AstNode('P', count, $2, NULL); 
           }
 #line 1924 "parse.tab.cpp" /* yacc.c:1646  */
     break;

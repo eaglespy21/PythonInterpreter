@@ -223,7 +223,7 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
             else{
               std::cout<<"Wrong data type"<<$2->getNodetype()<<std::endl;
             }
-            $$ = new AstNode('P', count, $2, NULL); 
+            //$$ = new AstNode('P', count, $2, NULL); 
           }
 	| %empty
 	;
