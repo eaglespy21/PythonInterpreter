@@ -208,22 +208,24 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
 	: EQUAL pick_yield_expr_testlist star_EQUAL 
           {
             //std::cout<<"star_EQ"<<$2->getNumber()<<std::endl;
-            double num = $2->getNumber();
+            //double num = $2->getNumber();
             if($2->getNodetype() == 'I'){  
               //std::cout<<"Insert Int\n";
-              symTab.insert($2->getNumber(), identName, "Int");
+              symTab.insert(eval($2), identName, "Int");
             }
             else if($2->getNodetype() == 'F'){
               //std::cout<<"Insert Float\n";
-              symTab.insert($2->getNumber(), identName, "Float");
+              symTab.insert(eval($2), identName, "Float");
             }
             else if($2->getNodetype() == 'M'){
-              symTab.insert(-($2->getLeft())->getNumber(), identName, ($2->getLeft())->getDataType());
+              symTab.insert(-eval($2->getLeft()), identName, ($2->getLeft())->getDataType());
             }  
             else{
-              std::cout<<"Wrong data type"<<$2->getNodetype()<<std::endl;
+              symTab.insert(eval($2), identName, "Float");
+              //std::cout<<"Wrong data type"<<$2->getNodetype()<<std::endl;
             }
-            //$$ = new AstNode('P', count, $2, NULL); 
+            //symTab.insert(eval($2), identName, "Int");
+            //$$ = new AstNode('P', count, $2, NULL);count++; 
           }
 	| %empty
 	;
