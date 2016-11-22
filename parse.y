@@ -14,6 +14,7 @@
         bool add=false,subtract=false, mult=false, division=false, powe=false, modulus=false;
         bool dSlash = false, uPlus = false, uNeg = false, comingFromPar = false;
         bool eAdd=false, eSub=false, eMult=false, eDiv=false, eMod=false, eDSlash=false;
+        bool pFlag = false;
         int uNegCount = 0, uPlusCount = 0;
 	void yyerror (char const *);
         std::string identName;
@@ -28,7 +29,7 @@
 }
 %token <d> FLOAT
 %token <i> INT 
-%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt
+%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -180,13 +181,23 @@ expr_stmt // Used in: small_stmt
               val_exp_st = floor(val_exp_st/rhs);
               eDSlash = false;
             }
-            symTab.modifyEntry(val_exp_st, $1->getName());
+            //if(symTab.ifExists($1->getName())){
+              //std::cout<<$1->getName()<<std::endl;
+              symTab.modifyEntry(val_exp_st, $1->getName());
+            //}
+            //else{
+              //std::cout<<"NameError: name is not defined\n";
+            //}
             //symTab.insert(val_exp_st, $1->getName(), $1->getDataType());
             //$$ = symTab.lookUp($1->getName(), count); count++;
           } 
 	| testlist star_EQUAL 
           {
+            //std::cout << "hello"<<$2->getDataType()<<std::endl;
             //std::cout<<"expr_stmt\n";
+            //Ast* a = $2->getLeft();
+            //std::cout<<a->getNumber()<<std::endl;
+            //symTab.insert(a->getNumber(), identName, "Int");
           }
 	;
 pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
@@ -205,10 +216,14 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
             else if($2->getNodetype() == 'F'){
               //std::cout<<"Insert Float\n";
               symTab.insert($2->getNumber(), identName, "Float");
-            } 
-            else{
-              std::cout<<"Wrong data type\n";
             }
+            else if($2->getNodetype() == 'M'){
+              symTab.insert(-($2->getLeft())->getNumber(), identName, ($2->getLeft())->getDataType());
+            }  
+            else{
+              std::cout<<"Wrong data type"<<$2->getNodetype()<<std::endl;
+            }
+            $$ = new AstNode('P', count, $2, NULL); 
           }
 	| %empty
 	;
@@ -229,6 +244,7 @@ augassign // Used in: expr_stmt
 print_stmt // Used in: small_stmt
 	: PRINT opt_test
           {
+            pFlag = true;
             std::cout << eval($2) <<std::endl;
             treeFree($2);
           }
@@ -624,6 +640,11 @@ factor // Used in: term, factor, power
             }
             else if(uNeg){
               //$$ = -$2;
+              //std::cout<<$2->getNodetype()<<std::endl;
+              //char ch = $2->getNodetype();
+              //std::cout<<"uNeg, factor "<<$2->getDataType()<<std::endl;
+              //$2->setNumber(-$2->getNumber());
+              //std::cout<<$2->getNumber()<<std::endl;
               $$ = new AstNode('M', count, $2, NULL); count++;
               //std::cout<<"uNegValue: "<<$$<<std::endl;
               uNegCount--;
@@ -682,7 +703,10 @@ atom // Used in: power
               //std::cout<<"In atom="<<$$->getNumber()<<std::endl;
               //$$ = new AstNumber('K',count, ); count++; 
             }
-            else{  
+            else{
+              if(pFlag){
+                //std::cout<<"NameError: name "<<$1<<" is not defined\n";
+              }  
               identName = $1; 
               //std::cout<<$1<<std::endl;
             }

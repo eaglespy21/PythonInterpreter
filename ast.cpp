@@ -47,7 +47,7 @@ double eval(Ast *a) {
   case 'M': v = -eval(a->getLeft()); break;
   case 'P': v = eval(a->getLeft()); break;
   case 'Z': std::cout<<"Division by zero\n";break;
-  default: std::cout << "internal error: bad node "
+  default: std::cout << "NameError: identifier is not defined"//"internal error: bad node "
                 << a->getNodetype() << std::endl;;
   }
   return v;

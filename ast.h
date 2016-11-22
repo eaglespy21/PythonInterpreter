@@ -3,6 +3,7 @@
 //  Adapted by Brian Malloy
 
 #include <string>
+#include<iostream>
 extern void yyerror(const char*);
 extern void yyerror(const char*, const char);
 
@@ -21,6 +22,7 @@ public:
 				return NULL; }
   virtual std::string getName() const { return "No Name";}
   virtual std::string getDataType() const { return "No DataType";}
+  virtual void setNumber(double a) const {}
 private:
   char nodetype;
   int nodeNumber;
@@ -58,6 +60,7 @@ public:
   virtual double getNumber() const { return number; } //Have to cast this to int while calling
   virtual std::string getName() const { return name; }
   virtual std::string getDataType() const { return "Int"; }
+  virtual void setNumber(double a){ number = (int)a;}
 private:
   std::string name;
   int number;
@@ -70,6 +73,7 @@ public:
   virtual double getNumber() const { return number; }
   virtual std::string getName() const { return name; }
   virtual std::string getDataType() const { return "Float"; }
+  virtual void setNumber(double a){ number = a;}
 private:
   std::string name;
   double number;
