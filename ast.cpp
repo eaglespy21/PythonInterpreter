@@ -29,8 +29,13 @@ double eval(Ast *a) {
   case '-': v = eval(a->getLeft()) - eval(a->getRight()); break;
   case '*': v = eval(a->getLeft()) * eval(a->getRight()); break;
   case '/':     
-            if(eval(a->getRight())!= 0) { 
-              v = (float)eval(a->getLeft()) / (float)eval(a->getRight()); 
+            if(eval(a->getRight())!= 0) {
+              if(a->getLeft()->getDataType() == "Float" ||a->getRight()->getDataType() == "Float"){
+                v = (float)eval(a->getLeft()) / (float)eval(a->getRight()); 
+              }
+              else{
+                v = floor(eval(a->getLeft())/eval(a->getRight()));
+              }
             }else{
               std::cout<<"Division by Zero\n";
             }
