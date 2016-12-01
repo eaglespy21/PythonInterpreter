@@ -98,7 +98,10 @@ decorated // Used in: compound_stmt
 	| decorators funcdef
 	;
 funcdef // Used in: decorated, compound_stmt
-	: DEF NAME parameters COLON suite
+	: DEF NAME parameters COLON suite 
+          {
+            std::cout<<"Definition of function"<<$2<<std::endl;
+          } 
 	;
 parameters // Used in: funcdef
 	: LPAR varargslist RPAR
@@ -431,12 +434,12 @@ opt_AS_COMMA // Used in: except_clause
 	;
 suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt, 
       // try_stmt, plus_except, opt_ELSE, opt_FINALLY, with_stmt, classdef
-	: simple_stmt
-	| NEWLINE INDENT plus_stmt DEDENT
+	: simple_stmt  { std::cout<<"Inside Suite(1)\n";}
+	| NEWLINE INDENT plus_stmt DEDENT { std::cout<<"Inside Suite(2)\n";}
 	;
 plus_stmt // Used in: suite, plus_stmt
-	: stmt plus_stmt
-	| stmt
+	: stmt plus_stmt {std::cout<<"Inside stmt(1)\n";}
+	| stmt { std::cout<<"Inside stmt\n"; } 
 	;
 testlist_safe // Used in: list_for
 	: old_test plus_COMMA_old_test
