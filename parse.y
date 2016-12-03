@@ -2,11 +2,15 @@
 %{
   #include <iostream>
   #include <math.h>
-  #include "symbolTable.h"
+//  #include "symbolTable.h"
+  #include "tableManager.h"
   #include <cmath>
 //  #include "ast.h"
   #include<fstream>
   #include<string.h>
+  #include<vector>
+  #include<stdlib.h>
+  #include<cstdlib>
 	int yylex (void);
 	extern int yylineno;
 	extern char *yytext;
@@ -18,7 +22,9 @@
         int uNegCount = 0, uPlusCount = 0;
 	void yyerror (char const *);
         std::string identName;
-        SymbolTable& symTab = SymbolTable::getInstance();
+        //SymbolTable& symTab = SymbolTable::getInstance();
+        TableManager& tableMan = TableManager::getInstance();
+        std::vector<Ast*> nodes;
 %}
 
 %union {
@@ -26,6 +32,7 @@
   double d; 
   int i;
   char* s; //Do we create a type class?
+  //std::vector<Ast*>* vec;
 }
 %token <d> FLOAT
 %token <i> INT 
@@ -186,7 +193,8 @@ expr_stmt // Used in: small_stmt
             }
             //if(symTab.ifExists($1->getName())){
               //std::cout<<$1->getName()<<std::endl;
-              symTab.modifyEntry(val_exp_st, $1->getName());
+              //symTab.modifyEntry(val_exp_st, $1->getName());
+              tableMan.getCurrentTable()->modifyEntry(val_exp_st, $1->getName());
             //}
             //else{
               //std::cout<<"NameError: name is not defined\n";
@@ -214,17 +222,22 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
             //double num = $2->getNumber();
             if($2->getNodetype() == 'I'){  
               //std::cout<<"Insert Int\n";
-              symTab.insert(eval($2), identName, "Int");
+              //symTab.insert(eval($2), identName, "Int");
+              tableMan.getCurrentTable()->insert(eval($2), identName, "Int");
             }
             else if($2->getNodetype() == 'F'){
               //std::cout<<"Insert Float\n";
-              symTab.insert(eval($2), identName, "Float");
+              //symTab.insert(eval($2), identName, "Float");
+              tableMan.getCurrentTable()->insert(eval($2), identName, "Float");
             }
             else if($2->getNodetype() == 'M'){
-              symTab.insert(-eval($2->getLeft()), identName, ($2->getLeft())->getDataType());
+              //symTab.insert(-eval($2->getLeft()), identName, ($2->getLeft())->getDataType());
+              tableMan.getCurrentTable()->insert(-eval($2->getLeft()), identName, ($2->getLeft())->getDataType());
+
             }  
             else{
-              symTab.insert(eval($2), identName, "Float");
+              //symTab.insert(eval($2), identName, "Float");
+              tableMan.getCurrentTable()->insert(eval($2), identName, "Float");
               //std::cout<<"Wrong data type"<<$2->getNodetype()<<std::endl;
             }
             //symTab.insert(eval($2), identName, "Int");
@@ -703,8 +716,10 @@ atom // Used in: power
 	| BACKQUOTE testlist1 BACKQUOTE
 	| NAME 
           { 
-            if(symTab.ifExists($1)){
-              $$ = symTab.lookUp($1, count); count++;
+            //if(symTab.ifExists($1)){
+            if(tableMan.getCurrentTable()->ifExists($1)){
+              //$$ = symTab.lookUp($1, count); count++;
+              $$ = tableMan.getCurrentTable()->lookUp($1, count); count++;
               //std::cout<<"In atom="<<$$->getNumber()<<std::endl;
               //$$ = new AstNumber('K',count, ); count++; 
             }

@@ -1,18 +1,22 @@
 #include<string>
 #include<map>
+#include<vector>
 #include "ast.h"
 class SymbolTable{
 public:
-  static SymbolTable& getInstance();
+  //static SymbolTable& getInstance();
   void insert(double v, std::string n, std::string t);
+  void insertFuncDef(std::string name, std::vector<Ast*>&);
   Ast* lookUp(std::string n, int nodeNum);
   bool ifExists(std::string n);
   void modifyEntry(double v, std::string n);
+  SymbolTable(): entryList(){
+  }
 private:
   SymbolTable(const SymbolTable&);
   SymbolTable& operator=(const SymbolTable&);
-  SymbolTable(): entryList(){
-  }
+//  SymbolTable(): entryList(){
+//  }
   class Entry{
   public:
     Entry(){} //This is required if you want to insert elements into a map using map[] operator, if default constructor not present use insert and std::pair

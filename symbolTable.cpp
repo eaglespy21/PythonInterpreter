@@ -1,11 +1,12 @@
 #include<string>
 #include<iostream>
 #include "symbolTable.h"
-
+/*
 SymbolTable& SymbolTable:: getInstance(){
   static SymbolTable instance;
   return instance;
 }
+*/
 void SymbolTable:: insert(double v, std::string n, std::string t){
   //std::cout<<"In symtab="<<v<<std::endl;
   entryList[n] = new Entry(v,n,t);
