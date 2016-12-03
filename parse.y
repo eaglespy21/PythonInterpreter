@@ -24,7 +24,7 @@
         std::string identName;
         //SymbolTable& symTab = SymbolTable::getInstance();
         TableManager& tableMan = TableManager::getInstance();
-        std::vector<Ast*> nodes;
+        std::vector<Ast*>* nodes = new std::vector<Ast*>();
 %}
 
 %union {
@@ -36,7 +36,8 @@
 }
 %token <d> FLOAT
 %token <i> INT 
-%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL
+%type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL 
+%type <ast>plus_stmt stmt
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -108,6 +109,7 @@ funcdef // Used in: decorated, compound_stmt
 	: DEF NAME parameters COLON suite 
           {
             std::cout<<"Definition of function"<<$2<<std::endl;
+            tableMan.getCurrentTable()->insertFuncDef($2, nodes);
           } 
 	;
 parameters // Used in: funcdef
@@ -451,7 +453,11 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt,
 	| NEWLINE INDENT plus_stmt DEDENT { std::cout<<"Inside Suite(2)\n";}
 	;
 plus_stmt // Used in: suite, plus_stmt
-	: stmt plus_stmt {std::cout<<"Inside stmt(1)\n";}
+	: stmt plus_stmt 
+          {
+            //std::cout<<"Inside stmt(1)\n";
+            nodes->push_back($1);
+          }
 	| stmt { std::cout<<"Inside stmt\n"; } 
 	;
 testlist_safe // Used in: list_for
@@ -694,6 +700,7 @@ power // Used in: factor
             //std::cout<<$2<<std::endl;
             //$$ = new AstNode('Z', count, $1, NULL); count++;
             //std::cout<<"in power"<<$$<<std::endl;
+            //std::vector<Ast*>* temp = tableMan.getCurrentTable()->getFuncEntry($1->getName());
           }
 	;
 star_trailer // Used in: power, star_trailer

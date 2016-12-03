@@ -6,8 +6,9 @@ class SymbolTable{
 public:
   //static SymbolTable& getInstance();
   void insert(double v, std::string n, std::string t);
-  void insertFuncDef(std::string name, std::vector<Ast*>&);
+  void insertFuncDef(std::string name, std::vector<Ast*>*);
   Ast* lookUp(std::string n, int nodeNum);
+  //std::vector<Ast*>* getFuncEntry(std::string n) const;
   bool ifExists(std::string n);
   void modifyEntry(double v, std::string n);
   SymbolTable(): entryList(){
@@ -27,10 +28,21 @@ private:
     std::string getName() const;
     std::string getType() const;
     void setValue(double v);
+    //std::vector<Ast*>* getFuncBody() const{ return NULL;}
   private:
     double value;
     std::string name;
     std::string type;
+  };
+  class FuncEntry: public Entry{
+  public:
+  FuncEntry(){}
+  FuncEntry(std::string funcName, std::vector<Ast*>* rhs): Entry(0,funcName,"func") { nodes = new std::vector<Ast*>(); nodes = rhs; }
+  FuncEntry operator=(const FuncEntry&);
+  ~FuncEntry() {}
+  //std::vector<Ast*>* getFuncBody() const;
+  private:
+    std::vector<Ast*>* nodes;
   };
   std::map<std::string, Entry*> entryList;
 }; 
