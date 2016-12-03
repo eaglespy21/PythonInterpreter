@@ -24,7 +24,8 @@
         std::string identName;
         //SymbolTable& symTab = SymbolTable::getInstance();
         TableManager& tableMan = TableManager::getInstance();
-        std::vector<Ast*>* nodes = new std::vector<Ast*>();
+        //std::vector<Ast*>* nodes = new std::vector<Ast*>();
+        int nodes_index = 0;
 %}
 
 %union {
@@ -33,11 +34,14 @@
   int i;
   char* s; //Do we create a type class?
   //std::vector<Ast*>* vec;
+  //int a[10];
+  Ast* nodes[10];
 }
 %token <d> FLOAT
 %token <i> INT 
 %type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL 
-%type <ast>plus_stmt stmt
+%type <ast>plus_stmt funcdef 
+%type <nodes>suite stmt
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -109,7 +113,7 @@ funcdef // Used in: decorated, compound_stmt
 	: DEF NAME parameters COLON suite 
           {
             std::cout<<"Definition of function"<<$2<<std::endl;
-            tableMan.getCurrentTable()->insertFuncDef($2, nodes);
+            //tableMan.getCurrentTable()->insertFuncDef($2, $4);
           } 
 	;
 parameters // Used in: funcdef
@@ -449,14 +453,26 @@ opt_AS_COMMA // Used in: except_clause
 	;
 suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt, 
       // try_stmt, plus_except, opt_ELSE, opt_FINALLY, with_stmt, classdef
-	: simple_stmt  { std::cout<<"Inside Suite(1)\n";}
-	| NEWLINE INDENT plus_stmt DEDENT { std::cout<<"Inside Suite(2)\n";}
+	: simple_stmt  
+          { 
+            std::cout<<"Inside Suite(1)\n";
+            //$$[index]=new AstNode();
+          }
+	| NEWLINE INDENT plus_stmt DEDENT 
+          { 
+            std::cout<<"Inside Suite(2)\n";
+            $3->getName();
+          }
 	;
 plus_stmt // Used in: suite, plus_stmt
 	: stmt plus_stmt 
           {
             //std::cout<<"Inside stmt(1)\n";
-            nodes->push_back($1);
+            //nodes->push_back($1);
+            //$$ = $2;
+            $1[nodes_index] = $2 ;
+            nodes_index++;
+            //$2->getName();
           }
 	| stmt { std::cout<<"Inside stmt\n"; } 
 	;

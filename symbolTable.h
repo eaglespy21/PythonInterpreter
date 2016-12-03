@@ -6,7 +6,8 @@ class SymbolTable{
 public:
   //static SymbolTable& getInstance();
   void insert(double v, std::string n, std::string t);
-  void insertFuncDef(std::string name, std::vector<Ast*>*);
+  //void insertFuncDef(std::string name, std::vector<Ast*>*);
+  void insertFuncDef(std::string name, Ast&);
   Ast* lookUp(std::string n, int nodeNum);
   //std::vector<Ast*>* getFuncEntry(std::string n) const;
   bool ifExists(std::string n);
@@ -37,12 +38,17 @@ private:
   class FuncEntry: public Entry{
   public:
   FuncEntry(){}
-  FuncEntry(std::string funcName, std::vector<Ast*>* rhs): Entry(0,funcName,"func") { nodes = new std::vector<Ast*>(); nodes = rhs; }
+  //FuncEntry(std::string funcName, std::vector<Ast*>* rhs): Entry(0,funcName,"func") { nodes = new std::vector<Ast*>(); nodes = rhs; }
+  FuncEntry(std::string funcName, Ast& rhs): Entry(0,funcName,"func"), nodes() 
+  { 
+    //nodes = new std::vector<Ast*>(); nodes = rhs; 
+  }
   FuncEntry operator=(const FuncEntry&);
   ~FuncEntry() {}
   //std::vector<Ast*>* getFuncBody() const;
   private:
-    std::vector<Ast*>* nodes;
+    //std::vector<Ast*>* nodes;
+    Ast* nodes[10];
   };
   std::map<std::string, Entry*> entryList;
 }; 

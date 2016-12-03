@@ -137,15 +137,17 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 30 "parse.y" /* yacc.c:1909  */
+#line 31 "parse.y" /* yacc.c:1909  */
 
   Ast* ast;
   double d; 
   int i;
   char* s; //Do we create a type class?
   //std::vector<Ast*>* vec;
+  //int a[10];
+  Ast* nodes[10];
 
-#line 149 "parse.tab.hpp" /* yacc.c:1909  */
+#line 151 "parse.tab.hpp" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
