@@ -75,6 +75,10 @@
   #include<vector>
   #include<stdlib.h>
   #include<cstdlib>
+  #include<cstring>
+  #include<iomanip>
+  #include<string>
+        TableManager& tableMan = TableManager::getInstance();
 	int yylex (void);
 	extern int yylineno;
 	extern char *yytext;
@@ -87,11 +91,11 @@
 	void yyerror (char const *);
         std::string identName;
         //SymbolTable& symTab = SymbolTable::getInstance();
-        TableManager& tableMan = TableManager::getInstance();
+        //TableManager& tableMan = TableManager::getInstance();
         //std::vector<Ast*>* nodes = new std::vector<Ast*>();
         int nodes_index = 0;
 
-#line 95 "parse.tab.cpp" /* yacc.c:339  */
+#line 99 "parse.tab.cpp" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -218,7 +222,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 31 "parse.y" /* yacc.c:355  */
+#line 35 "parse.y" /* yacc.c:355  */
 
   Ast* ast;
   double d; 
@@ -228,7 +232,7 @@ union YYSTYPE
   //int a[10];
   Ast* nodes[10];
 
-#line 232 "parse.tab.cpp" /* yacc.c:355  */
+#line 236 "parse.tab.cpp" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -243,7 +247,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 247 "parse.tab.cpp" /* yacc.c:358  */
+#line 251 "parse.tab.cpp" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -549,39 +553,39 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    71,    71,    72,    73,    82,    83,    86,    89,    90,
-      93,    94,    97,    98,   101,   102,   105,   106,   109,   110,
-     113,   120,   121,   124,   125,   128,   129,   132,   133,   136,
-     137,   140,   141,   144,   145,   148,   151,   152,   155,   158,
-     159,   160,   161,   162,   163,   164,   165,   166,   169,   211,
-     221,   222,   225,   252,   255,   256,   257,   258,   259,   260,
-     261,   262,   263,   264,   265,   266,   269,   275,   278,   284,
-     287,   288,   291,   294,   297,   298,   299,   300,   301,   304,
-     307,   310,   311,   314,   317,   318,   321,   322,   325,   326,
-     329,   330,   333,   336,   337,   340,   341,   344,   345,   348,
-     349,   350,   353,   354,   357,   358,   361,   364,   365,   368,
-     369,   372,   373,   376,   380,   386,   387,   390,   391,   392,
-     393,   394,   395,   396,   397,   400,   401,   404,   405,   408,
-     409,   412,   413,   416,   417,   420,   421,   424,   425,   428,
-     429,   432,   435,   436,   439,   440,   443,   444,   447,   448,
-     451,   452,   456,   461,   468,   477,   480,   481,   484,   487,
-     490,   491,   500,   503,   506,   507,   510,   513,   516,   519,
-     522,   523,   528,   531,   534,   535,   536,   537,   538,   539,
-     540,   541,   542,   543,   544,   548,   564,   568,   571,   574,
-     577,   580,   583,   588,   589,   592,   593,   612,   613,   616,
-     619,   655,   656,   659,   662,   668,   697,   700,   701,   706,
-     709,   714,   723,   724,   727,   737,   738,   739,   740,   757,
-     763,   767,   770,   775,   778,   783,   786,   787,   790,   791,
-     794,   795,   798,   799,   802,   803,   806,   807,   810,   811,
-     812,   815,   818,   819,   820,   823,   824,   827,   828,   831,
-     832,   835,   839,   845,   846,   849,   850,   853,   854,   857,
-     858,   861,   862,   865,   866,   867,   868,   869,   870,   873,
-     874,   877,   878,   881,   882,   885,   886,   889,   890,   893,
-     894,   898,   899,   902,   903,   906,   907,   910,   914,   918,
-     924,   925,   926,   929,   930,   931,   934,   935,   936,   939,
-     940,   941,   944,   945,   946,   949,   950,   951,   955,   956,
-     957,   960,   961,   962,   965,   966,   967,   970,   973,   976,
-     977,   978,   981,   982,   983
+       0,    75,    75,    76,    77,    86,    87,    90,    93,    94,
+      97,    98,   101,   102,   105,   106,   109,   110,   113,   114,
+     117,   127,   128,   131,   132,   135,   136,   139,   140,   143,
+     144,   147,   148,   151,   152,   155,   158,   159,   162,   165,
+     166,   167,   168,   169,   170,   171,   172,   173,   176,   218,
+     228,   229,   232,   259,   262,   263,   264,   265,   266,   267,
+     268,   269,   270,   271,   272,   273,   276,   282,   285,   291,
+     294,   295,   298,   301,   304,   305,   306,   307,   308,   311,
+     314,   317,   318,   321,   324,   325,   328,   329,   332,   333,
+     336,   337,   340,   343,   344,   347,   348,   351,   352,   355,
+     356,   357,   360,   361,   364,   365,   368,   371,   372,   375,
+     376,   379,   380,   383,   387,   393,   394,   397,   398,   399,
+     400,   401,   402,   403,   404,   407,   408,   411,   412,   415,
+     416,   419,   420,   423,   424,   427,   428,   431,   432,   435,
+     436,   439,   442,   443,   446,   447,   450,   451,   454,   455,
+     458,   459,   463,   468,   476,   485,   488,   489,   492,   495,
+     498,   499,   508,   511,   514,   515,   518,   521,   524,   527,
+     530,   531,   536,   539,   542,   543,   544,   545,   546,   547,
+     548,   549,   550,   551,   552,   556,   572,   576,   579,   582,
+     585,   588,   591,   596,   597,   600,   601,   620,   621,   624,
+     627,   663,   664,   667,   670,   676,   705,   708,   709,   714,
+     717,   722,   731,   732,   735,   745,   746,   747,   748,   765,
+     771,   775,   778,   783,   786,   791,   794,   795,   798,   799,
+     802,   803,   806,   807,   810,   811,   814,   815,   818,   819,
+     820,   823,   826,   827,   828,   831,   832,   835,   836,   839,
+     840,   843,   847,   853,   854,   857,   858,   861,   862,   865,
+     866,   869,   870,   873,   874,   875,   876,   877,   878,   881,
+     882,   885,   886,   889,   890,   893,   894,   897,   898,   901,
+     902,   906,   907,   910,   911,   914,   915,   918,   922,   926,
+     932,   933,   934,   937,   938,   939,   942,   943,   944,   947,
+     948,   949,   952,   953,   954,   957,   958,   959,   963,   964,
+     965,   968,   969,   970,   973,   974,   975,   978,   981,   984,
+     985,   986,   989,   990,   991
 };
 #endif
 
@@ -1829,40 +1833,43 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 72 "parse.y" /* yacc.c:1646  */
+#line 76 "parse.y" /* yacc.c:1646  */
     {std::cout<<"Hello\n";}
-#line 1835 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1839 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 114 "parse.y" /* yacc.c:1646  */
+#line 118 "parse.y" /* yacc.c:1646  */
     {
             std::cout<<"Definition of function"<<(yyvsp[-3].s)<<std::endl;
-            //tableMan.getCurrentTable()->insertFuncDef($2, $4);
+            tableMan.getCurrentTable()->insertFuncDef((yyvsp[-3].s), (yyvsp[0].nodes));
+            for(int i=0; i<nodes_index;i++){
+              eval((yyvsp[0].nodes)[i]);
+            }
           }
-#line 1844 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1851 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 125 "parse.y" /* yacc.c:1646  */
+#line 132 "parse.y" /* yacc.c:1646  */
     {std::cout<<"varaglist\n";}
-#line 1850 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1857 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 128 "parse.y" /* yacc.c:1646  */
+#line 135 "parse.y" /* yacc.c:1646  */
     {std::cout<<"EQUAL\n";}
-#line 1856 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1863 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 132 "parse.y" /* yacc.c:1646  */
+#line 139 "parse.y" /* yacc.c:1646  */
     {std::cout<<"star_fpdef\n";}
-#line 1862 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1869 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 170 "parse.y" /* yacc.c:1646  */
+#line 177 "parse.y" /* yacc.c:1646  */
     { 
             //std::cout<<$1->getNumber()<<" rhs "<<$3->getNumber()<<std::endl; 
             double val_exp_st = (yyvsp[-2].ast)->getNumber();
@@ -1904,11 +1911,11 @@ yyreduce:
             //symTab.insert(val_exp_st, $1->getName(), $1->getDataType());
             //$$ = symTab.lookUp($1->getName(), count); count++;
           }
-#line 1908 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1915 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 212 "parse.y" /* yacc.c:1646  */
+#line 219 "parse.y" /* yacc.c:1646  */
     {
             //std::cout << "hello"<<$2->getDataType()<<std::endl;
             //std::cout<<"expr_stmt\n";
@@ -1916,11 +1923,11 @@ yyreduce:
             //std::cout<<a->getNumber()<<std::endl;
             //symTab.insert(a->getNumber(), identName, "Int");
           }
-#line 1920 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1927 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 226 "parse.y" /* yacc.c:1646  */
+#line 233 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"star_EQ"<<$2->getNumber()<<std::endl;
             //double num = $2->getNumber();
@@ -1947,194 +1954,195 @@ yyreduce:
             //symTab.insert(eval($2), identName, "Int");
             //$$ = new AstNode('P', count, $2, NULL);count++; 
           }
-#line 1951 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1958 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 255 "parse.y" /* yacc.c:1646  */
+#line 262 "parse.y" /* yacc.c:1646  */
     { eAdd = true;}
-#line 1957 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1964 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 256 "parse.y" /* yacc.c:1646  */
+#line 263 "parse.y" /* yacc.c:1646  */
     { eSub = true;}
-#line 1963 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1970 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 257 "parse.y" /* yacc.c:1646  */
+#line 264 "parse.y" /* yacc.c:1646  */
     { eMult = true;}
-#line 1969 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1976 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 258 "parse.y" /* yacc.c:1646  */
+#line 265 "parse.y" /* yacc.c:1646  */
     {eDiv = true;}
-#line 1975 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1982 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 259 "parse.y" /* yacc.c:1646  */
+#line 266 "parse.y" /* yacc.c:1646  */
     {eMod = true;}
-#line 1981 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1988 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 261 "parse.y" /* yacc.c:1646  */
+#line 268 "parse.y" /* yacc.c:1646  */
     { std::cout<<"VBARE\n"; }
-#line 1987 "parse.tab.cpp" /* yacc.c:1646  */
+#line 1994 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 262 "parse.y" /* yacc.c:1646  */
+#line 269 "parse.y" /* yacc.c:1646  */
     {std::cout<<"CIRCUM\n";}
-#line 1993 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2000 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 263 "parse.y" /* yacc.c:1646  */
+#line 270 "parse.y" /* yacc.c:1646  */
     {std::cout<<"LEFTS\n";}
-#line 1999 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2006 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 264 "parse.y" /* yacc.c:1646  */
+#line 271 "parse.y" /* yacc.c:1646  */
     {std::cout<<"RIGHTS\n";}
-#line 2005 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2012 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 266 "parse.y" /* yacc.c:1646  */
+#line 273 "parse.y" /* yacc.c:1646  */
     {eDSlash = true;}
-#line 2011 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2018 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 270 "parse.y" /* yacc.c:1646  */
+#line 277 "parse.y" /* yacc.c:1646  */
     {
             pFlag = true;
             std::cout << eval((yyvsp[0].ast)) <<std::endl;
             treeFree((yyvsp[0].ast));
           }
-#line 2021 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2028 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 279 "parse.y" /* yacc.c:1646  */
+#line 286 "parse.y" /* yacc.c:1646  */
     { 
             //std::cout<<"opt_test"; 
             //std::cout << "= "<<eval($1) <<std::endl;
             //treeFree($1);
           }
-#line 2031 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2038 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 377 "parse.y" /* yacc.c:1646  */
+#line 384 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"exec_stmt\n";
           }
-#line 2039 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2046 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 381 "parse.y" /* yacc.c:1646  */
+#line 388 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"exec_stmt\n";
           }
-#line 2047 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2054 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 144:
-#line 439 "parse.y" /* yacc.c:1646  */
+#line 446 "parse.y" /* yacc.c:1646  */
     {std::cout<<"Test as expr\n";}
-#line 2053 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2060 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 152:
-#line 457 "parse.y" /* yacc.c:1646  */
+#line 464 "parse.y" /* yacc.c:1646  */
     { 
             std::cout<<"Inside Suite(1)\n";
             //$$[index]=new AstNode();
           }
-#line 2062 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2069 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 153:
-#line 462 "parse.y" /* yacc.c:1646  */
+#line 469 "parse.y" /* yacc.c:1646  */
     { 
             std::cout<<"Inside Suite(2)\n";
-            (yyvsp[-1].ast)->getName();
+            //$3->getName();
+            std::copy(std::begin((yyvsp[-1].nodes)), std::end((yyvsp[-1].nodes)), std::begin((yyval.nodes)));
           }
-#line 2071 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2079 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 154:
-#line 469 "parse.y" /* yacc.c:1646  */
+#line 477 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"Inside stmt(1)\n";
             //nodes->push_back($1);
             //$$ = $2;
-            (yyvsp[-1].nodes)[nodes_index] = (yyvsp[0].ast) ;
+            (yyval.nodes)[nodes_index] = (yyvsp[-1].ast);
             nodes_index++;
-            (yyvsp[0].ast)->getName();
+            //$2->getName();
           }
-#line 2084 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2092 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 155:
-#line 477 "parse.y" /* yacc.c:1646  */
+#line 485 "parse.y" /* yacc.c:1646  */
     { std::cout<<"Inside stmt\n"; }
-#line 2090 "parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 158:
-#line 484 "parse.y" /* yacc.c:1646  */
-    { 
-            //std::cout<<"old_test\n";
-          }
 #line 2098 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 162:
-#line 500 "parse.y" /* yacc.c:1646  */
-    {
-            //std::cout<<"test"<<$1<<std::endl;
+  case 158:
+#line 492 "parse.y" /* yacc.c:1646  */
+    { 
+            //std::cout<<"old_test\n";
           }
 #line 2106 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 162:
+#line 508 "parse.y" /* yacc.c:1646  */
+    {
+            //std::cout<<"test"<<$1<<std::endl;
+          }
+#line 2114 "parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
   case 166:
-#line 511 "parse.y" /* yacc.c:1646  */
+#line 519 "parse.y" /* yacc.c:1646  */
     { //std::cout<<"or test\n";
           }
-#line 2113 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2121 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 168:
-#line 517 "parse.y" /* yacc.c:1646  */
+#line 525 "parse.y" /* yacc.c:1646  */
     { //std::cout<<"and_test\n";
           }
-#line 2120 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2128 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 171:
-#line 524 "parse.y" /* yacc.c:1646  */
+#line 532 "parse.y" /* yacc.c:1646  */
     { //std::cout<<"not_test\n";
           }
-#line 2127 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2135 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 172:
-#line 529 "parse.y" /* yacc.c:1646  */
+#line 537 "parse.y" /* yacc.c:1646  */
     { //std::cout<<"Comparison\n"; 
           }
-#line 2134 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2142 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 185:
-#line 549 "parse.y" /* yacc.c:1646  */
+#line 557 "parse.y" /* yacc.c:1646  */
     {
        
             //std::cout<<"In expr\n";
@@ -2150,46 +2158,46 @@ yyreduce:
              }
              //$$ = new AstNode('Z', count, $1, NULL);
           }
-#line 2154 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2162 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 186:
-#line 564 "parse.y" /* yacc.c:1646  */
+#line 572 "parse.y" /* yacc.c:1646  */
     {
           }
-#line 2161 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2169 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 187:
-#line 569 "parse.y" /* yacc.c:1646  */
+#line 577 "parse.y" /* yacc.c:1646  */
     { 
           }
-#line 2168 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2176 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 189:
-#line 575 "parse.y" /* yacc.c:1646  */
+#line 583 "parse.y" /* yacc.c:1646  */
     { 
           }
-#line 2175 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2183 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 191:
-#line 581 "parse.y" /* yacc.c:1646  */
+#line 589 "parse.y" /* yacc.c:1646  */
     { 
           }
-#line 2182 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2190 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 192:
-#line 584 "parse.y" /* yacc.c:1646  */
+#line 592 "parse.y" /* yacc.c:1646  */
     {
           }
-#line 2189 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2197 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 196:
-#line 594 "parse.y" /* yacc.c:1646  */
+#line 602 "parse.y" /* yacc.c:1646  */
     {
             if(add)
             {
@@ -2206,31 +2214,31 @@ yyreduce:
               subtract = false;
             }
         }
-#line 2210 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2218 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 197:
-#line 612 "parse.y" /* yacc.c:1646  */
+#line 620 "parse.y" /* yacc.c:1646  */
     {add = true;}
-#line 2216 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2224 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 198:
-#line 613 "parse.y" /* yacc.c:1646  */
+#line 621 "parse.y" /* yacc.c:1646  */
     {subtract = true;}
-#line 2222 "parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 199:
-#line 616 "parse.y" /* yacc.c:1646  */
-    {  
-            //std::cout<<"Term\n";
-            }
 #line 2230 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 199:
+#line 624 "parse.y" /* yacc.c:1646  */
+    {  
+            //std::cout<<"Term\n";
+            }
+#line 2238 "parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
   case 200:
-#line 620 "parse.y" /* yacc.c:1646  */
+#line 628 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"EXECUTE DOUBLESLASH"<<dSlash<<std::endl;
             if(mult){
@@ -2264,41 +2272,41 @@ yyreduce:
             }
             //std::cout<<"Term\n";
           }
-#line 2268 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2276 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 201:
-#line 655 "parse.y" /* yacc.c:1646  */
+#line 663 "parse.y" /* yacc.c:1646  */
     { mult = true;}
-#line 2274 "parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 202:
-#line 656 "parse.y" /* yacc.c:1646  */
-    { 
-                  division = true;
-                }
 #line 2282 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 203:
-#line 659 "parse.y" /* yacc.c:1646  */
+  case 202:
+#line 664 "parse.y" /* yacc.c:1646  */
     { 
-                    modulus = true;
-                  }
+                  division = true;
+                }
 #line 2290 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 204:
-#line 663 "parse.y" /* yacc.c:1646  */
+  case 203:
+#line 667 "parse.y" /* yacc.c:1646  */
     { 
-                    dSlash = true;
+                    modulus = true;
                   }
 #line 2298 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 204:
+#line 671 "parse.y" /* yacc.c:1646  */
+    { 
+                    dSlash = true;
+                  }
+#line 2306 "parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
   case 205:
-#line 669 "parse.y" /* yacc.c:1646  */
+#line 677 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"Come into factor\n";
             //std::cout<<uNegCount<<std::endl;
@@ -2327,47 +2335,47 @@ yyreduce:
               }
             }
           }
-#line 2331 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2339 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 207:
-#line 700 "parse.y" /* yacc.c:1646  */
+#line 708 "parse.y" /* yacc.c:1646  */
     { uPlus = true; uPlusCount++; }
-#line 2337 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2345 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 208:
-#line 701 "parse.y" /* yacc.c:1646  */
+#line 709 "parse.y" /* yacc.c:1646  */
     { 
                   uNeg = true;
                   uNegCount++;
                   //std::cout<<"MINUS"<<std::endl;
                 }
-#line 2347 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2355 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 210:
-#line 710 "parse.y" /* yacc.c:1646  */
+#line 718 "parse.y" /* yacc.c:1646  */
     { 
             //$$ = pow($1, $4);
             (yyval.ast) = new AstNode('E', count, (yyvsp[-3].ast), (yyvsp[0].ast)); count++;
           }
-#line 2356 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2364 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 211:
-#line 715 "parse.y" /* yacc.c:1646  */
+#line 723 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<$2<<std::endl;
             //$$ = new AstNode('Z', count, $1, NULL); count++;
             //std::cout<<"in power"<<$$<<std::endl;
             //std::vector<Ast*>* temp = tableMan.getCurrentTable()->getFuncEntry($1->getName());
           }
-#line 2367 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2375 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 214:
-#line 728 "parse.y" /* yacc.c:1646  */
+#line 736 "parse.y" /* yacc.c:1646  */
     { 
             //std::cout<<"In atom\n";
             (yyval.ast) = (yyvsp[-1].ast); 
@@ -2377,11 +2385,11 @@ yyreduce:
             //std::cout<<"In atom"<<$$<<std::endl; 
             comingFromPar = true;
           }
-#line 2381 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2389 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 218:
-#line 741 "parse.y" /* yacc.c:1646  */
+#line 749 "parse.y" /* yacc.c:1646  */
     { 
             //if(symTab.ifExists($1)){
             if(tableMan.getCurrentTable()->ifExists((yyvsp[0].s))){
@@ -2398,119 +2406,119 @@ yyreduce:
               //std::cout<<$1<<std::endl;
             }
           }
-#line 2402 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2410 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 219:
-#line 758 "parse.y" /* yacc.c:1646  */
+#line 766 "parse.y" /* yacc.c:1646  */
     {
             //std::cout<<"Float value="<<$1<<std::endl;
             //std::cout<<"Reached atom"<<std::endl; 
             (yyval.ast) = new AstFloat('F',count, "temp", (yyvsp[0].d)); count++; //This node gets discarded anyways, temp node 
           }
-#line 2412 "parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 220:
-#line 764 "parse.y" /* yacc.c:1646  */
-    {
-            (yyval.ast) = new AstInt('I',count, "temp", (yyvsp[0].i)); count++; //This node gets discarded anyways, temp node 
-          }
 #line 2420 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 220:
+#line 772 "parse.y" /* yacc.c:1646  */
+    {
+            (yyval.ast) = new AstInt('I',count, "temp", (yyvsp[0].i)); count++; //This node gets discarded anyways, temp node 
+          }
+#line 2428 "parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
   case 221:
-#line 767 "parse.y" /* yacc.c:1646  */
+#line 775 "parse.y" /* yacc.c:1646  */
     {std::cout<<"PLUS IN ATOM\n";}
-#line 2426 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2434 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 222:
-#line 771 "parse.y" /* yacc.c:1646  */
+#line 779 "parse.y" /* yacc.c:1646  */
     {
             //$$ = new AstNode('Z', count, $1, NULL); count++; 
             //std::cout<<"In yield expr"<<$$<<std::endl; 
           }
-#line 2435 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2443 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 224:
-#line 779 "parse.y" /* yacc.c:1646  */
+#line 787 "parse.y" /* yacc.c:1646  */
     {
             //$$ = new AstNode('Z', count, $1, NULL); count++;  
             //std::cout<<"In pick_yield"<<$$<<std::endl; 
           }
-#line 2444 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2452 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 230:
-#line 794 "parse.y" /* yacc.c:1646  */
+#line 802 "parse.y" /* yacc.c:1646  */
     { std::cout <<"STRINGPLUS\n";}
-#line 2450 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2458 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 231:
-#line 795 "parse.y" /* yacc.c:1646  */
+#line 803 "parse.y" /* yacc.c:1646  */
     {std::cout<<"STRING\n";}
-#line 2456 "parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 252:
-#line 840 "parse.y" /* yacc.c:1646  */
-    {
-            //std::cout<<"testlist"<<$1<<std::endl;
-          }
 #line 2464 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 252:
+#line 848 "parse.y" /* yacc.c:1646  */
+    {
+            //std::cout<<"testlist"<<$1<<std::endl;
+          }
+#line 2472 "parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
   case 258:
-#line 854 "parse.y" /* yacc.c:1646  */
+#line 862 "parse.y" /* yacc.c:1646  */
     {std::cout<<"star_COMMA\n";}
-#line 2470 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2478 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 270:
-#line 874 "parse.y" /* yacc.c:1646  */
+#line 882 "parse.y" /* yacc.c:1646  */
     {std::cout<<"argument\n";}
-#line 2476 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2484 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 287:
-#line 910 "parse.y" /* yacc.c:1646  */
+#line 918 "parse.y" /* yacc.c:1646  */
     {std::cout<<"Encoding_decl\n";}
-#line 2482 "parse.tab.cpp" /* yacc.c:1646  */
-    break;
-
-  case 288:
-#line 915 "parse.y" /* yacc.c:1646  */
-    { 
-            //$$ = new AstNode('Z', count, NULL, $2); count++; 
-          }
 #line 2490 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
-  case 289:
-#line 919 "parse.y" /* yacc.c:1646  */
+  case 288:
+#line 923 "parse.y" /* yacc.c:1646  */
     { 
-            //$$ = new AstNode('Z', count, NULL, NULL); count++; 
+            //$$ = new AstNode('Z', count, NULL, $2); count++; 
           }
 #line 2498 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
+  case 289:
+#line 927 "parse.y" /* yacc.c:1646  */
+    { 
+            //$$ = new AstNode('Z', count, NULL, NULL); count++; 
+          }
+#line 2506 "parse.tab.cpp" /* yacc.c:1646  */
+    break;
+
   case 296:
-#line 934 "parse.y" /* yacc.c:1646  */
+#line 942 "parse.y" /* yacc.c:1646  */
     {std::cout<<"star_comma\n";}
-#line 2504 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2512 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
   case 299:
-#line 939 "parse.y" /* yacc.c:1646  */
+#line 947 "parse.y" /* yacc.c:1646  */
     {std::cout<<"Star_COMMA\n";}
-#line 2510 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2518 "parse.tab.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2514 "parse.tab.cpp" /* yacc.c:1646  */
+#line 2522 "parse.tab.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2738,7 +2746,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 986 "parse.y" /* yacc.c:1906  */
+#line 994 "parse.y" /* yacc.c:1906  */
 
 
 #include <stdio.h>

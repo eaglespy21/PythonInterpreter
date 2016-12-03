@@ -1,4 +1,4 @@
-CCC = clang++
+CCC = g++
 LEX = flex
 YACC = bison
 CFLAGS = -Wall -std=c++11
@@ -17,7 +17,7 @@ main.o: main.cpp parse.y scan.l parse.tab.cpp lex.yy.cpp
 	$(CCC) $(CFLAGS) -c main.cpp
 
 parse.tab.cpp: parse.y ast.h
-	$(YACC) $(YACCDEBUG) -oparse.tab.cpp parse.y
+	$(YACC) $(YACCDEBUG) -o parse.tab.cpp parse.y
 
 ast.o: ast.cpp ast.h
 	$(CCC) $(CFLAGS) -c ast.cpp
@@ -28,11 +28,11 @@ symbolTable.o: symbolTable.cpp symbolTable.h
 tableManager.o: tableManager.cpp tableManager.h
 	$(CCC) $(CFLAGS) -c tableManager.cpp
 
-parse.tab.o: parse.tab.cpp
+parse.tab.o: parse.tab.cpp tableManager.h
 	$(CCC) $(CFLAGS) -c parse.tab.cpp
 
 lex.yy.cpp: scan.l parse.tab.o
-	$(LEX) $(LEXDEBUG) -olex.yy.cpp scan.l
+	$(LEX) $(LEXDEBUG) -o lex.yy.cpp scan.l
 
 lex.yy.o: lex.yy.cpp
 	$(CCC) $(CFLAGS) $(LEXFLAGS) -c lex.yy.cpp
@@ -40,4 +40,4 @@ lex.yy.o: lex.yy.cpp
 clean:
 	rm -f run *.o parse.tab.cpp lex.yy.cpp
 	rm -f parse.tab.h
-	rm -f parse.output
+	rm -f parse.output parse.tab.hpp

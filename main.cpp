@@ -1,17 +1,17 @@
 #include <iostream>
 //#include "parse.tab.h"
 
-extern FILE * yyin;
-extern int keywords;
-extern int identifiers;
-extern int numbers;
-extern int yydebug;
-extern int yylineno;
+//extern FILE * yyin;
+//extern int keywords;
+//extern int identifiers;
+//extern int numbers;
+//extern int yydebug;
+//extern int yylineno;
 int count = 0;
 int yylex(void);
 extern int yyparse();
 
-
+/*
 void openFile(const char *filename) {
     FILE *file = fopen(filename, "r");
     if (!file) {
@@ -22,7 +22,7 @@ void openFile(const char *filename) {
     }
     yyin = file;
 }
-
+*/
 void printInfo(void)
 {
   //std::cout << "keywords: " << keywords << std::endl;
@@ -33,9 +33,9 @@ void printInfo(void)
 
 int main(int argc, char * argv[]) {
   if (argc > 1) { // user-supplied filename
-    openFile(argv[1]);
+    //openFile(argv[1]);
   }
-  yydebug = 0;
+  //yydebug = 0;
   int parseErrors = yyparse();
   if ( parseErrors ) {
     std::cerr << "Abnormal termination" << std::endl;

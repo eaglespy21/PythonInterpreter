@@ -11,6 +11,10 @@
   #include<vector>
   #include<stdlib.h>
   #include<cstdlib>
+  #include<cstring>
+  #include<iomanip>
+  #include<string>
+        TableManager& tableMan = TableManager::getInstance();
 	int yylex (void);
 	extern int yylineno;
 	extern char *yytext;
@@ -23,7 +27,7 @@
 	void yyerror (char const *);
         std::string identName;
         //SymbolTable& symTab = SymbolTable::getInstance();
-        TableManager& tableMan = TableManager::getInstance();
+        //TableManager& tableMan = TableManager::getInstance();
         //std::vector<Ast*>* nodes = new std::vector<Ast*>();
         int nodes_index = 0;
 %}
@@ -40,8 +44,8 @@
 %token <d> FLOAT
 %token <i> INT 
 %type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL 
-%type <ast>plus_stmt funcdef 
-%type <nodes>suite stmt
+%type <ast>funcdef stmt 
+%type <nodes>suite plus_stmt
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -113,7 +117,10 @@ funcdef // Used in: decorated, compound_stmt
 	: DEF NAME parameters COLON suite 
           {
             std::cout<<"Definition of function"<<$2<<std::endl;
-            //tableMan.getCurrentTable()->insertFuncDef($2, $4);
+            tableMan.getCurrentTable()->insertFuncDef($2, $5);
+            for(int i=0; i<nodes_index;i++){
+              eval($5[i]);
+            }
           } 
 	;
 parameters // Used in: funcdef
@@ -461,7 +468,8 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt,
 	| NEWLINE INDENT plus_stmt DEDENT 
           { 
             std::cout<<"Inside Suite(2)\n";
-            $3->getName();
+            //$3->getName();
+            std::copy(std::begin($3), std::end($3), std::begin($$));
           }
 	;
 plus_stmt // Used in: suite, plus_stmt
@@ -470,7 +478,7 @@ plus_stmt // Used in: suite, plus_stmt
             //std::cout<<"Inside stmt(1)\n";
             //nodes->push_back($1);
             //$$ = $2;
-            $1[nodes_index] = $2 ;
+            $$[nodes_index] = $1;
             nodes_index++;
             //$2->getName();
           }

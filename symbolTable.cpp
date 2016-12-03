@@ -1,6 +1,10 @@
 #include<string>
 #include<iostream>
 #include "symbolTable.h"
+  #include<vector>
+  #include<stdlib.h>
+  #include<cstdlib>
+
 /*
 SymbolTable& SymbolTable:: getInstance(){
   static SymbolTable instance;
@@ -13,7 +17,7 @@ void SymbolTable:: insert(double v, std::string n, std::string t){
   //entryList.insert(std::pair<std::string, Entry*>(n, new Entry(v,n,t)));
 }
 //void SymbolTable:: insertFuncDef(std::string name, std::vector<Ast*>* nodes_arg){
-void SymbolTable:: insertFuncDef(std::string name, Ast& nodes_arg){
+void SymbolTable:: insertFuncDef(std::string name, Ast* nodes_arg[]){
   entryList[name] = new FuncEntry(name, nodes_arg);
 }
 /*

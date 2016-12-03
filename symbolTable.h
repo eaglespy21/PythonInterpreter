@@ -2,12 +2,15 @@
 #include<map>
 #include<vector>
 #include "ast.h"
+  #include<stdlib.h>
+  #include<cstdlib>
+
 class SymbolTable{
 public:
   //static SymbolTable& getInstance();
   void insert(double v, std::string n, std::string t);
   //void insertFuncDef(std::string name, std::vector<Ast*>*);
-  void insertFuncDef(std::string name, Ast&);
+  void insertFuncDef(std::string name, Ast* []);
   Ast* lookUp(std::string n, int nodeNum);
   //std::vector<Ast*>* getFuncEntry(std::string n) const;
   bool ifExists(std::string n);
@@ -39,8 +42,11 @@ private:
   public:
   FuncEntry(){}
   //FuncEntry(std::string funcName, std::vector<Ast*>* rhs): Entry(0,funcName,"func") { nodes = new std::vector<Ast*>(); nodes = rhs; }
-  FuncEntry(std::string funcName, Ast& rhs): Entry(0,funcName,"func"), nodes() 
-  { 
+  FuncEntry(std::string funcName, Ast* rhs[]): Entry(0,funcName,"func"), nodes() 
+  {
+    //nodes = rhs;
+    //std::copy(std::begin(rhs), std::end(rhs), std::begin(nodes)); 
+    
     //nodes = new std::vector<Ast*>(); nodes = rhs; 
   }
   FuncEntry operator=(const FuncEntry&);
