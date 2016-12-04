@@ -11,7 +11,7 @@ public:
   void insert(double v, std::string n, std::string t);
   void insertFuncDef(std::string name, Ast* suite);
   Ast* lookUp(std::string n, int nodeNum);
-  Ast* getFuncEntry(std::string n) const;
+  Ast* getFuncEntry(std::string n);
   bool ifExists(std::string n);
   void modifyEntry(double v, std::string n);
   SymbolTable(): entryList(){
@@ -31,6 +31,7 @@ private:
     std::string getName() const;
     std::string getType() const;
     void setValue(double v);
+    virtual Ast* getSuiteNode() const { return NULL; }
   private:
     double value;
     std::string name;
@@ -44,7 +45,7 @@ private:
   {}
   FuncEntry operator=(const FuncEntry&);
   ~FuncEntry() {}
-  Ast* getSuiteNode() const;
+  virtual Ast* getSuiteNode() const;
   private:
     Ast* suite;
   };

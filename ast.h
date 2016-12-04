@@ -96,7 +96,7 @@ private:
 
 class AstAssignmentNode:public Ast{
 public:
-  AstAssignmentNode(char nodetype, int num, std::string name_arg, double val, std::string type_arg):  Ast(nodetype, num), name(name_arg), rhs(val), type(type_arg) {}
+  AstAssignmentNode(char nodetype, int num, std::string name_arg, std::string type_arg, double val):  Ast(nodetype, num), name(name_arg), type(type_arg), rhs(val) {}
   virtual ~AstAssignmentNode() {}
   virtual double getNumber() const { return rhs;}
   virtual std::string getName() const { return name;}
@@ -107,6 +107,19 @@ private:
   std::string type;
   double rhs;
 };
+class AstCallNode:public Ast{
+public:
+  AstCallNode(char nodetype, int num, std::string name_arg):  Ast(nodetype, num), name(name_arg), type("CallNode"){}
+  virtual ~AstCallNode() {}
+  virtual double getNumber() const { return -99;}
+  virtual std::string getName() const { return name;}
+  virtual std::string getDataType() const { return type;}
+  virtual void setNumber(double a) {}
+private:
+  std::string name;
+  std::string type;
+};
+
 
 
 double eval(Ast*);   // Evaluate an AST

@@ -7,7 +7,7 @@
 #include<string>
 #include<sstream>
 #include<math.h>
-
+#include "tableManager.h" //RMD
 namespace patch
 {
     template < typename T > std::string to_string( const T& n )
@@ -21,6 +21,8 @@ namespace patch
 
 double eval(Ast *a) {
   double v = 0;
+  Ast* suiteTemp;
+  TableManager& tableMan = TableManager::getInstance();
   switch( a->getNodetype() ) {
   //case 'K': v = a->getNumber(); break;
   case 'I': v = (int)a->getNumber(); break;
@@ -55,9 +57,19 @@ double eval(Ast *a) {
   case 'S': std::cout<<"Evaluate suite Node\n";break;
   case 'A':
           //Evaluate assignment node
+          tableMan.getCurrentTable()->insert(eval(a->getLeft()), a->getName(), a->getDataType());
           break;
-  default: std::cout << "NameError: identifier is not defined"//"internal error: bad node "
-                << a->getNodetype() << std::endl;;
+  case 'C': 
+          //Evaluate Call Node
+          suiteTemp = tableMan.getCurrentTable()->getFuncEntry(a->getName());
+          tableMan.pushTable();
+          eval(suiteTemp);
+          tableMan.popTable();
+          //The not found string in the getFuncEntry function
+          break;
+  default: //std::cout << "NameError: identifier is not defined"//"internal error: bad node "
+           //     << a->getNodetype() << std::endl; 
+           break;
   }
   return v;
 }
@@ -123,7 +135,7 @@ void treeFree(Ast *a) {
 
   default: //std::cout << "internal error: bad node "
            //     << a->getNodetype() << std::endl;;
-           //Make sure you delete suite node at the end of program
+           //Make sure you delete suite node at the end of program, and assignment nodes and call nodes
            break;
   }
 }

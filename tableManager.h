@@ -8,6 +8,8 @@ public:
   //void getEntry();
   //void insertEntry();
   SymbolTable* getCurrentTable();
+  bool ifInGlobal();
+  Ast* getFuncEntry(std::string name);
 private:
   TableManager(const TableManager&);
   TableManager& operator=(const TableManager&);

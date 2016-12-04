@@ -17,15 +17,10 @@ void SymbolTable:: insert(double v, std::string n, std::string t){
   entryList[n] = new Entry(v,n,t);
   //entryList.insert(std::pair<std::string, Entry*>(n, new Entry(v,n,t)));
 }
-//void SymbolTable:: insertFuncDef(std::string name, std::vector<Ast*>* nodes_arg){
 void SymbolTable:: insertFuncDef(std::string name, Ast* suite_arg){
   entryList[name] = new FuncEntry(name, suite_arg);
 }
-/*
-std::vector<Ast*>* SymbolTable::getFuncEntry(std::string n) const{
-  return entryList[n]->getFuncBody();
-}
-*/
+
 void SymbolTable:: modifyEntry(double v, std::string n){
   entryList[n]->setValue(v); //Write setter
 }
@@ -76,5 +71,8 @@ void SymbolTable::Entry::setValue(double v){
 }
 Ast* SymbolTable::FuncEntry::getSuiteNode() const{
   return suite;
+}
+Ast* SymbolTable::getFuncEntry(std::string n){
+  return entryList[n]->getSuiteNode();
 }
 
