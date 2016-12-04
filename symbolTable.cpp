@@ -31,6 +31,9 @@ Ast* SymbolTable::lookUp(std::string n, int nodeNum){
   else if( entryList[n]->getType() == "Float"){
     return new AstFloat('F', nodeNum, entryList[n]->getName(), (double)entryList[n]->getValue());
   }
+  else if(entryList[n]->getType() == "Func"){
+    return entryList[n]->getSuiteNode();
+  }
   else{
     std::cout<<"Wrong dataType\n";
     return NULL;
@@ -73,6 +76,7 @@ Ast* SymbolTable::FuncEntry::getSuiteNode() const{
   return suite;
 }
 Ast* SymbolTable::getFuncEntry(std::string n){
+  std::cout<<"Inside getFuncEntry\n";
   return entryList[n]->getSuiteNode();
 }
 

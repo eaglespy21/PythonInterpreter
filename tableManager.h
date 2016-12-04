@@ -9,7 +9,8 @@ public:
   //void insertEntry();
   SymbolTable* getCurrentTable();
   bool ifInGlobal();
-  Ast* getFuncEntry(std::string name);
+  Ast* getFuncEntry(std::string name); //Scan's through current scope and all the scopes previous to this one for func entry
+  bool ifFuncEntryExists(std::string name);
 private:
   TableManager(const TableManager&);
   TableManager& operator=(const TableManager&);

@@ -25,6 +25,7 @@ public:
   virtual std::string getName() const { return "No Name";}
   virtual std::string getDataType() const { return "No DataType";}
   virtual void setNumber(double a) const {}
+  virtual std::vector<Ast*>* getNodes() { return NULL; }
 private:
   char nodetype;
   int nodeNumber;
@@ -96,16 +97,16 @@ private:
 
 class AstAssignmentNode:public Ast{
 public:
-  AstAssignmentNode(char nodetype, int num, std::string name_arg, std::string type_arg, double val):  Ast(nodetype, num), name(name_arg), type(type_arg), rhs(val) {}
+  AstAssignmentNode(char nodetype, int num, std::string name_arg, std::string type_arg):  Ast(nodetype, num), name(name_arg), type(type_arg){}//, rhs(val) {}
   virtual ~AstAssignmentNode() {}
-  virtual double getNumber() const { return rhs;}
+  virtual double getNumber() const { return -99;}
   virtual std::string getName() const { return name;}
   virtual std::string getDataType() const { return type;} 
   virtual void setNumber(double a) {}
 private:
   std::string name;
   std::string type;
-  double rhs;
+  //Ast* rhs; //We might need to create store the node rhs here or maybe not since they point to the same thing
 };
 class AstCallNode:public Ast{
 public:

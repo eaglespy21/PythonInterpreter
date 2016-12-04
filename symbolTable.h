@@ -41,7 +41,7 @@ private:
   public:
   FuncEntry(){}
   //FuncEntry(std::string funcName, std::vector<Ast*>* rhs): Entry(0,funcName,"func") { nodes = new std::vector<Ast*>(); nodes = rhs; }
-  FuncEntry(std::string funcName, Ast* suite_arg): Entry(0,funcName,"func"), suite(suite_arg) 
+  FuncEntry(std::string funcName, Ast* suite_arg): Entry(0,funcName,"Func"), suite(suite_arg) 
   {}
   FuncEntry operator=(const FuncEntry&);
   ~FuncEntry() {}

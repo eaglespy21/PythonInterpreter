@@ -25,7 +25,7 @@ bool TableManager::ifInGlobal(){
 }
 Ast* TableManager::getFuncEntry(std::string name){
   //std::vector<int>:: reverse_iterator rit = tableList.rbegin();
-  for(int i = tableList.size();i>0; i--){
+  for(int i = tableList.size()-1;i>=0; i--){
     if(tableList[i]->ifExists(name)){
       //return true;
       return tableList[i]->getFuncEntry(name);
@@ -36,4 +36,18 @@ Ast* TableManager::getFuncEntry(std::string name){
     }
   }
   return NULL;
+}
+
+bool TableManager::ifFuncEntryExists(std::string name){
+    //std::cout<<"Inside function funcEntryExists\n";
+    for(int i = tableList.size()-1;i>=0; i--){
+    //std::cout<<i<<std::endl;
+    if(tableList[i]->ifExists(name)){
+      return true;
+    }
+    else{
+      std::cout<<"Could not find function\n";
+      return false;
+    }
+  }
 }

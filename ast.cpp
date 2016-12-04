@@ -22,6 +22,8 @@ namespace patch
 double eval(Ast *a) {
   double v = 0;
   Ast* suiteTemp;
+  std::vector<Ast*>* tempVec;
+  std::vector<Ast*>::iterator it;
   TableManager& tableMan = TableManager::getInstance();
   switch( a->getNodetype() ) {
   //case 'K': v = a->getNumber(); break;
@@ -54,7 +56,13 @@ double eval(Ast *a) {
   case 'M': v = -eval(a->getLeft()); break;
   case 'P': v = eval(a->getLeft()); break;
   case 'Z': std::cout<<"Division by zero\n";break;
-  case 'S': std::cout<<"Evaluate suite Node\n";break;
+  case 'S': 
+            std::cout<<"Evaluate suite Node\n";
+            //tempVec = a->getNodes();
+            //for( int i = tempVec->size();i>=0;i++){
+              //eval(*tempVec);
+            //}
+            break;
   case 'A':
           //Evaluate assignment node
           tableMan.getCurrentTable()->insert(eval(a->getLeft()), a->getName(), a->getDataType());
