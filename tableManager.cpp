@@ -1,5 +1,4 @@
 #include "tableManager.h"
-
 TableManager& TableManager:: getInstance(){
   static TableManager instance;
   return instance;

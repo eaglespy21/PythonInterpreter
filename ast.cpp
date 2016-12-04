@@ -52,7 +52,10 @@ double eval(Ast *a) {
   case 'M': v = -eval(a->getLeft()); break;
   case 'P': v = eval(a->getLeft()); break;
   case 'Z': std::cout<<"Division by zero\n";break;
-  case 'S': std::cout<<"Evaluate suite Node\n";
+  case 'S': std::cout<<"Evaluate suite Node\n";break;
+  case 'A':
+          //Evaluate assignment node
+          break;
   default: std::cout << "NameError: identifier is not defined"//"internal error: bad node "
                 << a->getNodetype() << std::endl;;
   }

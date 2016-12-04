@@ -3,9 +3,11 @@
   #include <iostream>
   #include <math.h>
 //  #include "symbolTable.h"
+//#ifndef TABLEMANAGER_H
+//#define TABLEMANAGER_H
   #include "tableManager.h"
   #include <cmath>
-//  #include "ast.h"
+  #include "ast.h"
   #include<fstream>
   #include<string.h>
   #include<vector>
@@ -30,6 +32,7 @@
         //TableManager& tableMan = TableManager::getInstance();
         //std::vector<Ast*>* nodes = new std::vector<Ast*>();
         //int nodes_index = 0;
+//#endif
 %}
 
 %union {

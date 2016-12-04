@@ -5,6 +5,7 @@
 #include <string>
 #include<iostream>
 #include<vector>
+class TableManager; //RMD
 extern void yyerror(const char*);
 extern void yyerror(const char*, const char);
 
@@ -91,6 +92,20 @@ public:
 private:
   std::string name;
   std::vector<Ast*>* nodes;
+};
+
+class AstAssignmentNode:public Ast{
+public:
+  AstAssignmentNode(char nodetype, int num, std::string name_arg, double val, std::string type_arg):  Ast(nodetype, num), name(name_arg), rhs(val), type(type_arg) {}
+  virtual ~AstAssignmentNode() {}
+  virtual double getNumber() const { return rhs;}
+  virtual std::string getName() const { return name;}
+  virtual std::string getDataType() const { return type;} 
+  virtual void setNumber(double a) {}
+private:
+  std::string name;
+  std::string type;
+  double rhs;
 };
 
 

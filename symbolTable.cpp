@@ -1,6 +1,7 @@
 #include<string>
 #include<iostream>
 #include "symbolTable.h"
+#include "ast.h" //RMD
   #include<vector>
   #include<stdlib.h>
   #include<cstdlib>

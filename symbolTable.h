@@ -1,10 +1,10 @@
 #include<string>
 #include<map>
 #include<vector>
-#include "ast.h"
+//#include "ast.h" //RMD
   #include<stdlib.h>
   #include<cstdlib>
-
+class Ast;
 class SymbolTable{
 public:
   //static SymbolTable& getInstance();
