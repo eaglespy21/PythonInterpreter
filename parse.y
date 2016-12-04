@@ -29,7 +29,7 @@
         //SymbolTable& symTab = SymbolTable::getInstance();
         //TableManager& tableMan = TableManager::getInstance();
         //std::vector<Ast*>* nodes = new std::vector<Ast*>();
-        int nodes_index = 0;
+        //int nodes_index = 0;
 %}
 
 %union {
@@ -37,15 +37,15 @@
   double d; 
   int i;
   char* s; //Do we create a type class?
-  //std::vector<Ast*>* vec;
+  std::vector<Ast*>* nodes;
   //int a[10];
-  Ast* nodes[10];
+  //Ast* nodes[10];
 }
 %token <d> FLOAT
 %token <i> INT 
 %type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL 
-%type <ast>funcdef stmt 
-%type <nodes>suite plus_stmt
+%type <ast>funcdef stmt suite print_stmt
+%type <nodes>plus_stmt
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
 //shift_expr xor_expr and_expr expr
@@ -118,9 +118,9 @@ funcdef // Used in: decorated, compound_stmt
           {
             std::cout<<"Definition of function"<<$2<<std::endl;
             tableMan.getCurrentTable()->insertFuncDef($2, $5);
-            for(int i=0; i<nodes_index;i++){
-              eval($5[i]);
-            }
+            //for(int i=0; i<nodes_index;i++){
+            //  eval($5[i]);
+            //}
           } 
 	;
 parameters // Used in: funcdef
@@ -276,6 +276,7 @@ print_stmt // Used in: small_stmt
 	: PRINT opt_test
           {
             pFlag = true;
+            //$$ = new AstNode('P', count, $2, NULL); count++;
             std::cout << eval($2) <<std::endl;
             treeFree($2);
           }
@@ -469,7 +470,7 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt,
           { 
             std::cout<<"Inside Suite(2)\n";
             //$3->getName();
-            std::copy(std::begin($3), std::end($3), std::begin($$));
+            $$ = new AstSuiteNode('S', count, "Function_name", $3); //You should also be sending current[parent] scope 
           }
 	;
 plus_stmt // Used in: suite, plus_stmt
@@ -478,11 +479,16 @@ plus_stmt // Used in: suite, plus_stmt
             //std::cout<<"Inside stmt(1)\n";
             //nodes->push_back($1);
             //$$ = $2;
-            $$[nodes_index] = $1;
-            nodes_index++;
             //$2->getName();
+            $$ = $2;
+            $$->push_back($1);
           }
-	| stmt { std::cout<<"Inside stmt\n"; } 
+	| stmt {
+            $$ = new std::vector<Ast*>();
+            $$->reserve(8);
+            $$->push_back($1); 
+            std::cout<<"Inside stmt\n"; 
+          } 
 	;
 testlist_safe // Used in: list_for
 	: old_test plus_COMMA_old_test
@@ -725,6 +731,16 @@ power // Used in: factor
             //$$ = new AstNode('Z', count, $1, NULL); count++;
             //std::cout<<"in power"<<$$<<std::endl;
             //std::vector<Ast*>* temp = tableMan.getCurrentTable()->getFuncEntry($1->getName());
+            //std::cout<<"star_trailer\n";
+            /*
+            bool existTemp = tableMan.getCurrentTable()->ifExists($1->getName());
+            if(existTemp){
+              std::cout<<"Ready to evaluate suite node\n"<<$1->getName()<<std::endl;
+            }
+            else{
+              std::cout<<$1->getName()<<" Not found\n";
+            }
+            */
           }
 	;
 star_trailer // Used in: power, star_trailer

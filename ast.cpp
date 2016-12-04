@@ -52,6 +52,7 @@ double eval(Ast *a) {
   case 'M': v = -eval(a->getLeft()); break;
   case 'P': v = eval(a->getLeft()); break;
   case 'Z': std::cout<<"Division by zero\n";break;
+  case 'S': std::cout<<"Evaluate suite Node\n";
   default: std::cout << "NameError: identifier is not defined"//"internal error: bad node "
                 << a->getNodetype() << std::endl;;
   }
@@ -117,8 +118,10 @@ void treeFree(Ast *a) {
     delete a;
     break;
 
-  default: std::cout << "internal error: bad node "
-                << a->getNodetype() << std::endl;;
+  default: //std::cout << "internal error: bad node "
+           //     << a->getNodetype() << std::endl;;
+           //Make sure you delete suite node at the end of program
+           break;
   }
 }
 

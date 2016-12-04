@@ -31,9 +31,11 @@
  */
 
 #include "ast.h"
+#include <vector>
 #include "parse.tab.hpp"
 #include <stack>
 #include<iostream>
+
   /* The scanner state: */
   static std::stack<int> indentations;
   static int curr_indent = 0;

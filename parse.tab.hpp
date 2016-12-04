@@ -143,9 +143,9 @@ union YYSTYPE
   double d; 
   int i;
   char* s; //Do we create a type class?
-  //std::vector<Ast*>* vec;
+  std::vector<Ast*>* nodes;
   //int a[10];
-  Ast* nodes[10];
+  //Ast* nodes[10];
 
 #line 151 "parse.tab.hpp" /* yacc.c:1909  */
 };

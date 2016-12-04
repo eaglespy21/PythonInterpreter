@@ -4,6 +4,7 @@
 
 #include <string>
 #include<iostream>
+#include<vector>
 extern void yyerror(const char*);
 extern void yyerror(const char*, const char);
 
@@ -77,6 +78,19 @@ public:
 private:
   std::string name;
   double number;
+};
+
+class AstSuiteNode: public Ast{
+public:
+  AstSuiteNode(char nodetype, int num, std::string name_arg, std::vector<Ast*>* nodes_arg): Ast(nodetype, num), name(name_arg), nodes(nodes_arg) {}
+  virtual ~AstSuiteNode() {}
+  virtual double getNumber() const { return -99; }
+  virtual std::string getName() const {return name;}
+  virtual std::string getDataType() const{ return "Suite";}
+  virtual void setNumber(double a) {}
+private:
+  std::string name;
+  std::vector<Ast*>* nodes;
 };
 
 

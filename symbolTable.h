@@ -9,10 +9,9 @@ class SymbolTable{
 public:
   //static SymbolTable& getInstance();
   void insert(double v, std::string n, std::string t);
-  //void insertFuncDef(std::string name, std::vector<Ast*>*);
-  void insertFuncDef(std::string name, Ast* []);
+  void insertFuncDef(std::string name, Ast* suite);
   Ast* lookUp(std::string n, int nodeNum);
-  //std::vector<Ast*>* getFuncEntry(std::string n) const;
+  Ast* getFuncEntry(std::string n) const;
   bool ifExists(std::string n);
   void modifyEntry(double v, std::string n);
   SymbolTable(): entryList(){
@@ -32,7 +31,6 @@ private:
     std::string getName() const;
     std::string getType() const;
     void setValue(double v);
-    //std::vector<Ast*>* getFuncBody() const{ return NULL;}
   private:
     double value;
     std::string name;
@@ -42,19 +40,13 @@ private:
   public:
   FuncEntry(){}
   //FuncEntry(std::string funcName, std::vector<Ast*>* rhs): Entry(0,funcName,"func") { nodes = new std::vector<Ast*>(); nodes = rhs; }
-  FuncEntry(std::string funcName, Ast* rhs[]): Entry(0,funcName,"func"), nodes() 
-  {
-    //nodes = rhs;
-    //std::copy(std::begin(rhs), std::end(rhs), std::begin(nodes)); 
-    
-    //nodes = new std::vector<Ast*>(); nodes = rhs; 
-  }
+  FuncEntry(std::string funcName, Ast* suite_arg): Entry(0,funcName,"func"), suite(suite_arg) 
+  {}
   FuncEntry operator=(const FuncEntry&);
   ~FuncEntry() {}
-  //std::vector<Ast*>* getFuncBody() const;
+  Ast* getSuiteNode() const;
   private:
-    //std::vector<Ast*>* nodes;
-    Ast* nodes[10];
+    Ast* suite;
   };
   std::map<std::string, Entry*> entryList;
 }; 
