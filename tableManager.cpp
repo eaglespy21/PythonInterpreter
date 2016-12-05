@@ -57,3 +57,23 @@ bool TableManager::ifFuncEntryExists(std::string name){
     }
   }
 }
+
+bool TableManager::ifExists(std::string name){
+  for(int i=tableList.size()-1;i>=0;i--){
+    if(tableList[i]->ifExists(name)){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+}
+
+Ast* TableManager::lookUp(std::string n, int nodeNum){
+  for(int i=tableList.size()-1;i>=0;i--){
+    if(tableList[i]->ifExists(n)){
+      return tableList[i]->lookUp(n, nodeNum);
+    }
+  }
+  return NULL;
+}  

@@ -779,8 +779,9 @@ atom // Used in: power
 	| NAME 
           { 
               //tableMan.getCurrentTable()->displayTable();
-            if(tableMan.getCurrentTable()->ifExists($1)){
-              $$ = tableMan.getCurrentTable()->lookUp($1, count); count++;
+            if(tableMan.ifExists($1)){
+              $$ = tableMan.lookUp($1, count); count++;
+              //std::cout<<"It exists: "<<$$->getDataType()<<std::endl;
               //std::cout<<"In atom: "<<$$->getNodetype()<<std::endl;
             }
             else{

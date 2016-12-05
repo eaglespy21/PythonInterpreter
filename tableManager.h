@@ -11,6 +11,8 @@ public:
   bool ifInGlobal();
   Ast* getFuncEntry(std::string name); //Scan's through current scope and all the scopes previous to this one for func entry
   bool ifFuncEntryExists(std::string name);
+  bool ifExists(std::string name); 
+  Ast* lookUp(std::string n, int nodeNum);
 private:
   TableManager(const TableManager&);
   TableManager& operator=(const TableManager&);
