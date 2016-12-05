@@ -13,6 +13,7 @@ public:
   bool ifFuncEntryExists(std::string name);
   bool ifExists(std::string name); 
   Ast* lookUp(std::string n, int nodeNum);
+  SymbolTable* getTableAt(int i);
 private:
   TableManager(const TableManager&);
   TableManager& operator=(const TableManager&);

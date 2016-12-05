@@ -25,9 +25,10 @@
         bool dSlash = false, uPlus = false, uNeg = false, comingFromPar = false;
         bool eAdd=false, eSub=false, eMult=false, eDiv=false, eMod=false, eDSlash=false;
         bool pFlag = false;
+        bool globalFlag = false;
         int uNegCount = 0, uPlusCount = 0;
 	void yyerror (char const *);
-        std::string identName;
+        std::string identName, globalName;
         //SymbolTable& symTab = SymbolTable::getInstance();
         //TableManager& tableMan = TableManager::getInstance();
         //std::vector<Ast*>* nodes = new std::vector<Ast*>();
@@ -217,7 +218,7 @@ expr_stmt // Used in: small_stmt
             //$$ = symTab.lookUp($1->getName(), count); count++;
           } 
 	| testlist star_EQUAL 
-          {
+          {  //Testlist is the name 
             //std::cout << "hello"<<$2->getDataType()<<std::endl;
             //std::cout<<"expr_stmt\n";
             //Ast* a = $2->getLeft();
@@ -232,7 +233,10 @@ pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
 star_EQUAL // Used in: expr_stmt, star_EQUAL
 	: EQUAL pick_yield_expr_testlist star_EQUAL 
           {
-            //if(tableMan.ifInGlobal()){
+              if(globalFlag){
+                tableMan.getTableAt(0)->modifyEntry(eval($2), globalName);
+              }
+              else{
               if($2->getNodetype() == 'I'){  
                 tableMan.getCurrentTable()->insert(eval($2), identName, "Int");
               }
@@ -245,10 +249,8 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
               else{
                 tableMan.getCurrentTable()->insert(eval($2), identName, "Float");
               }
-            //}
-            
-            //else{
-              //std::cout<<"Inside star_EQ";
+              }
+              globalFlag = false;
               std::string tempType;
               if($2->getNodetype() == 'I'){  
                 tempType = "Int";
@@ -257,9 +259,6 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
               else if($2->getNodetype() == 'F'){  tempType = "Float"; }
               else if($2->getNodetype() == 'M'){  tempType = ($2->getLeft())->getDataType(); }
               else { tempType = "Float"; }
-              $$ = new AstAssignmentNode('A', count, identName, tempType);
-            //} 
-            
               $$ = new AstAssignmentNode('A', count, identName, tempType); //Change to tempType later
           }
 	| %empty
@@ -283,6 +282,7 @@ print_stmt // Used in: small_stmt
           {
             pFlag = true;
             $$ = new AstPrintNode('Q', count, $2); count++;
+            //std::cout<<"Type Print node points to: "<<$2->getNodetype()<<std::endl;
             if(tableMan.ifInGlobal()) { std::cout<<eval($2)<<std::endl; } 
           }
 	| PRINT RIGHTSHIFT test opt_test_2
@@ -387,7 +387,10 @@ dotted_name // Used in: decorator, import_from, dotted_as_name, dotted_name
 	;
 global_stmt // Used in: small_stmt, global_stmt
 	: global_stmt COMMA NAME
-	| GLOBAL NAME
+	| GLOBAL NAME 
+          {
+            globalFlag = true;
+          } 
 	;
 exec_stmt // Used in: small_stmt
 	: EXEC expr IN test opt_COMMA_test
@@ -779,10 +782,12 @@ atom // Used in: power
 	| NAME 
           { 
               //tableMan.getCurrentTable()->displayTable();
+            //std::cout<<"Searching for: "<<$1<<std::endl;
             if(tableMan.ifExists($1)){
               $$ = tableMan.lookUp($1, count); count++;
               //std::cout<<"It exists: "<<$$->getDataType()<<std::endl;
               //std::cout<<"In atom: "<<$$->getNodetype()<<std::endl;
+              globalName = $1; //To enable global
             }
             else{
               if(pFlag){

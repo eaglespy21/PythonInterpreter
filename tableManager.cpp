@@ -29,6 +29,9 @@ bool TableManager::ifInGlobal(){
     return false;
   }
 }
+SymbolTable* TableManager::getTableAt(int i){
+  return tableList[i];
+}
 Ast* TableManager::getFuncEntry(std::string name){
   //std::vector<int>:: reverse_iterator rit = tableList.rbegin();
   for(int i = tableList.size()-1;i>=0; i--){
@@ -60,13 +63,13 @@ bool TableManager::ifFuncEntryExists(std::string name){
 
 bool TableManager::ifExists(std::string name){
   for(int i=tableList.size()-1;i>=0;i--){
+    //std::cout<<"Table: "<<i<<std::endl;
+    //tableList[i]->displayTable();
     if(tableList[i]->ifExists(name)){
       return true;
     }
-    else{
-      return false;
-    }
   }
+  return false;
 }
 
 Ast* TableManager::lookUp(std::string n, int nodeNum){
