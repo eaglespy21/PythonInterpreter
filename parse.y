@@ -123,7 +123,8 @@ funcdef // Used in: decorated, compound_stmt
           {
             tableMan.getCurrentTable()->insertFuncDef($2, $5);
             std::cout<<"Defined function"<<$2<<std::endl;
-            //tableMan.popTable(); //Pop fake scope
+            tableMan.popTable(); //Push fake scope
+            std::cout<<"Popped fake scope\n";
           } 
 	;
 parameters // Used in: funcdef
@@ -282,7 +283,7 @@ print_stmt // Used in: small_stmt
             pFlag = true;
             if(tableMan.ifInGlobal()){
               std::cout << eval($2) <<std::endl;
-              treeFree($2);
+              //treeFree($2);
             }
             else{
               $$ = new AstNode('P', count, $2, NULL); count++;
@@ -480,7 +481,6 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt,
             //$3->getName();
             $$ = new AstSuiteNode('S', count, "Function_name", $3); //You should also be sending current[parent] scope 
             std::cout<<"created a suite node\n";
-            //tableMan.popTable(); //Pop fake scope
             //std::cout<<"Popped fake scope\n";
           }
 	;
@@ -496,6 +496,8 @@ plus_stmt // Used in: suite, plus_stmt
           }
 	| stmt {
             $$ = new std::vector<Ast*>();
+            tableMan.pushTable(); //Pop fake scope
+            std::cout<<"Pushed fake scope\n";
             $$->reserve(8);
             $$->push_back($1); 
             //std::cout<<"Inside stmt\n"; 
@@ -745,10 +747,10 @@ power // Used in: factor
             if(tableMan.ifInGlobal()){
               //if(tableMan.ifFuncEntryExists(identName)){
                 //Ast* tempSuite = tableMan.getCurrentTable()->getFuncEntry(identName);
-                tableMan.pushTable();
+                //tableMan.pushTable();
                 eval($1);
                 std::cout<<"Evaluated suite node on call\n";
-                tableMan.popTable(); //Nested functions won't work here I think
+                //tableMan.popTable(); //Nested functions won't work here I think
               //}
               //else{
                 //std::cout<<"Function not found\n";

@@ -90,6 +90,7 @@ public:
   virtual std::string getName() const {return name;}
   virtual std::string getDataType() const{ return "Suite";}
   virtual void setNumber(double a) {}
+  virtual std::vector<Ast*>* getNodes() { return nodes; }
 private:
   std::string name;
   std::vector<Ast*>* nodes;

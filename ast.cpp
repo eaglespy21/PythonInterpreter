@@ -23,7 +23,7 @@ double eval(Ast *a) {
   double v = 0;
   Ast* suiteTemp;
   std::vector<Ast*>* tempVec;
-  std::vector<Ast*>::iterator it;
+  //std::vector<Ast*>::iterator it;
   TableManager& tableMan = TableManager::getInstance();
   switch( a->getNodetype() ) {
   //case 'K': v = a->getNumber(); break;
@@ -54,14 +54,19 @@ double eval(Ast *a) {
   case '%': v = fmod(eval(a->getLeft()), eval(a->getRight())); break;
   case 'E': v = pow( eval(a->getLeft()), eval(a->getRight())); break;
   case 'M': v = -eval(a->getLeft()); break;
-  case 'P': v = eval(a->getLeft()); break;
+  case 'P': 
+            v = eval(a->getLeft());
+            std::cout<<v<<std::endl;
+            break;
   case 'Z': std::cout<<"Division by zero\n";break;
   case 'S': 
             std::cout<<"Evaluate suite Node\n";
-            //tempVec = a->getNodes();
-            //for( int i = tempVec->size();i>=0;i++){
-              //eval(*tempVec);
-            //}
+            tempVec = a->getNodes();
+            //eval(tempVec->at(2));
+            for( int i = 0;i<tempVec->size();i++){
+              std::cout<<i<<tempVec->at(i)<<std::endl;
+              eval(tempVec->at(i));
+            }
             break;
   case 'A':
           //Evaluate assignment node
