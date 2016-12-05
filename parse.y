@@ -209,7 +209,12 @@ expr_stmt // Used in: small_stmt
             //if(symTab.ifExists($1->getName())){
               //std::cout<<$1->getName()<<std::endl;
               //symTab.modifyEntry(val_exp_st, $1->getName());
-              tableMan.getCurrentTable()->modifyEntry(val_exp_st, $1->getName());
+              //tableMan.getCurrentTable()->modifyEntry(val_exp_st, $1->getName());
+              if(globalFlag){ 
+              tableMan.getTableAt(0)->modifyEntry(val_exp_st, $1->getName()); globalFlag = false;
+              }else{
+              tableMan.modifyEntry(val_exp_st, $1->getName());
+              }
             //}
             //else{
               //std::cout<<"NameError: name is not defined\n";

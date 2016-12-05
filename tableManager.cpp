@@ -79,4 +79,14 @@ Ast* TableManager::lookUp(std::string n, int nodeNum){
     }
   }
   return NULL;
-}  
+} 
+
+void TableManager::modifyEntry(double v, std::string n){
+  for(int i=tableList.size()-1;i>=0;i--){
+    if(tableList[i]->ifExists(n)){
+      tableList[i]->modifyEntry(v, n);
+      return;
+    }
+  }
+}
+   

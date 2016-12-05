@@ -14,6 +14,7 @@ public:
   bool ifExists(std::string name); 
   Ast* lookUp(std::string n, int nodeNum);
   SymbolTable* getTableAt(int i);
+  void modifyEntry(double v, std::string n);
 private:
   TableManager(const TableManager&);
   TableManager& operator=(const TableManager&);

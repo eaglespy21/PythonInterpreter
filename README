@@ -5,10 +5,13 @@ Course number: 8270
 Project no: 6
 Project due date: 12-5-2016
 
-Project description: 
+Project description: Python interpreter that interprets functions and arithmetics operations. Activation records created for functions in the symbol table. 
+Table Manager implemented that pushes and pops scopes for functions and creates chain of symbol tables. Print nodes, assignment nodes and call nodes created from lastproject.  
 
-Difficulties:  
+Difficulties: Changing the last project to include parsing of functions. 
+In theory and logically the project was easy to understand but implementing it was much harder especially because of the python grammar. 
 
 Extra: 
 testArith.py is the testHarness to use it is similar to the last project. 
 cases/ contains all the test cases including basic functions, return statement and global statement 
+All the new test cases are in cases/ folder, they have 'func' in their file names. 
