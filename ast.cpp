@@ -22,6 +22,7 @@ namespace patch
 double eval(Ast *a) {
   double v = 0;
   Ast* suiteTemp;
+  Ast* printTemp;
   std::vector<Ast*>* tempVec;
   //std::vector<Ast*>::iterator it;
   TableManager& tableMan = TableManager::getInstance();
@@ -56,21 +57,36 @@ double eval(Ast *a) {
   case 'M': v = -eval(a->getLeft()); break;
   case 'P': 
             v = eval(a->getLeft());
-            std::cout<<v<<std::endl;
+            //std::cout<<v<<std::endl;
             break;
+  case 'Q': 
+            printTemp = a->getPrintNode();
+            v = eval(printTemp);
+            break; 
   case 'Z': std::cout<<"Division by zero\n";break;
   case 'S': 
-            std::cout<<"Evaluate suite Node\n";
+            //std::cout<<"Evaluate suite Node\n";
             tempVec = a->getNodes();
             //eval(tempVec->at(2));
-            for( int i = 0;i<tempVec->size();i++){
-              std::cout<<i<<tempVec->at(i)<<std::endl;
-              eval(tempVec->at(i));
+            //std::cout<<"Size of tempVec "<<tempVec->size()<<std::endl;
+            for( int i = tempVec->size()-1;i>=0;i--){
+              //std::cout<<tempVec->at(i)->getNodetype()<<std::endl;        
+              //std::cout<<i<<tempVec->at(i)<<std::endl;
+                //std::cout<<"Hello\n";
+              if(tableMan.ifInGlobal() && tempVec->at(i)->getNodetype() == 'Q'){
+                std::cout<<eval(tempVec->at(i))<<std::endl;
+              }
+              else{
+                //std::cout<<"Hello\n";
+                eval(tempVec->at(i));
+              }
             }
             break;
   case 'A':
           //Evaluate assignment node
-          tableMan.getCurrentTable()->insert(eval(a->getLeft()), a->getName(), a->getDataType());
+          std::cout<<"Inside assignment eval\n";
+          //tableMan.getCurrentTable()->insert(eval(a->getLeft()), a->getName(), a->getDataType());
+          //tableMan.getCurrentTable()->displayTable();
           break;
   case 'C': 
           //Evaluate Call Node

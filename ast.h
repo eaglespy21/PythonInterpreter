@@ -26,6 +26,7 @@ public:
   virtual std::string getDataType() const { return "No DataType";}
   virtual void setNumber(double a) const {}
   virtual std::vector<Ast*>* getNodes() { return NULL; }
+  virtual Ast* getPrintNode() { return NULL;}
 private:
   char nodetype;
   int nodeNumber;
@@ -102,7 +103,7 @@ public:
   virtual ~AstAssignmentNode() {}
   virtual double getNumber() const { return -99;}
   virtual std::string getName() const { return name;}
-  virtual std::string getDataType() const { return type;} 
+  virtual std::string getDataType() const { return "Assignment";} 
   virtual void setNumber(double a) {}
 private:
   std::string name;
@@ -119,6 +120,19 @@ public:
   virtual void setNumber(double a) {}
 private:
   std::string name;
+  std::string type;
+};
+class AstPrintNode:public Ast{
+public:
+  AstPrintNode(char nodetype, int num, Ast* ast_arg):  Ast(nodetype, num),  printAst(ast_arg), type("PrintNode"){}
+  virtual ~AstPrintNode() {}
+  virtual double getNumber() const { return -99;}
+  virtual std::string getName() const { return "PrintNode";}
+  virtual std::string getDataType() const { return type;}
+  virtual void setNumber(double a) {}
+  virtual Ast* getPrintNode() { return printAst; } 
+private:
+  Ast* printAst;
   std::string type;
 };
 

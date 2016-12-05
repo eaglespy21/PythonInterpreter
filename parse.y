@@ -47,7 +47,7 @@
 %token <d> FLOAT
 %token <i> INT 
 %type <ast> arith_expr term factor atom power opt_yield_test opt_test or_test pick_yield_expr_testlist testlist expr_stmt star_EQUAL 
-%type <ast>funcdef stmt suite print_stmt star_trailer
+%type <ast>funcdef stmt suite print_stmt star_trailer return_stmt
 %type <nodes>plus_stmt
 %token <s> NAME
 //pick_yield_expr_testlist_comp yield_expr
@@ -122,9 +122,6 @@ funcdef // Used in: decorated, compound_stmt
 	: DEF NAME parameters COLON suite 
           {
             tableMan.getCurrentTable()->insertFuncDef($2, $5);
-            std::cout<<"Defined function"<<$2<<std::endl;
-            tableMan.popTable(); //Push fake scope
-            std::cout<<"Popped fake scope\n";
           } 
 	;
 parameters // Used in: funcdef
@@ -235,7 +232,7 @@ pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
 star_EQUAL // Used in: expr_stmt, star_EQUAL
 	: EQUAL pick_yield_expr_testlist star_EQUAL 
           {
-            if(tableMan.ifInGlobal()){
+            //if(tableMan.ifInGlobal()){
               if($2->getNodetype() == 'I'){  
                 tableMan.getCurrentTable()->insert(eval($2), identName, "Int");
               }
@@ -248,8 +245,10 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
               else{
                 tableMan.getCurrentTable()->insert(eval($2), identName, "Float");
               }
-            }
-            else{
+            //}
+            
+            //else{
+              //std::cout<<"Inside star_EQ";
               std::string tempType;
               if($2->getNodetype() == 'I'){  
                 tempType = "Int";
@@ -259,7 +258,9 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
               else if($2->getNodetype() == 'M'){  tempType = ($2->getLeft())->getDataType(); }
               else { tempType = "Float"; }
               $$ = new AstAssignmentNode('A', count, identName, tempType);
-            } 
+            //} 
+            
+              $$ = new AstAssignmentNode('A', count, identName, tempType); //Change to tempType later
           }
 	| %empty
 	;
@@ -281,13 +282,8 @@ print_stmt // Used in: small_stmt
 	: PRINT opt_test
           {
             pFlag = true;
-            if(tableMan.ifInGlobal()){
-              std::cout << eval($2) <<std::endl;
-              //treeFree($2);
-            }
-            else{
-              $$ = new AstNode('P', count, $2, NULL); count++;
-            } 
+            $$ = new AstPrintNode('Q', count, $2); count++;
+            if(tableMan.ifInGlobal()) { std::cout<<eval($2)<<std::endl; } 
           }
 	| PRINT RIGHTSHIFT test opt_test_2
 	;
@@ -325,6 +321,10 @@ continue_stmt // Used in: flow_stmt
 	;
 return_stmt // Used in: flow_stmt
 	: RETURN testlist
+          {
+            $$ = new AstPrintNode('Q', count, $2); count++;
+            if(tableMan.ifInGlobal()) { std::cout<<eval($2)<<std::endl; }       
+          }     
 	| RETURN
 	;
 yield_stmt // Used in: flow_stmt
@@ -475,32 +475,27 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt,
             //std::cout<<"Inside Suite(1)\n";
             //$$[index]=new AstNode();
           }
-	| NEWLINE INDENT plus_stmt DEDENT 
+	| NEWLINE INDENT{tableMan.pushTable();} plus_stmt DEDENT 
           { 
             //std::cout<<"Inside Suite(2)\n";
             //$3->getName();
-            $$ = new AstSuiteNode('S', count, "Function_name", $3); //You should also be sending current[parent] scope 
-            std::cout<<"created a suite node\n";
+            $$ = new AstSuiteNode('S', count, "Function_name", $4); //You should also be sending current[parent] scope 
+            //std::cout<<"created a suite node\n";
             //std::cout<<"Popped fake scope\n";
+            //tableMan.getCurrentTable()->displayTable();
+            tableMan.popTable();
           }
 	;
 plus_stmt // Used in: suite, plus_stmt
 	: stmt plus_stmt 
           {
-            //std::cout<<"Inside stmt(1)\n";
-            //nodes->push_back($1);
-            //$$ = $2;
-            //$2->getName();
             $$ = $2;
             $$->push_back($1);
           }
 	| stmt {
             $$ = new std::vector<Ast*>();
-            tableMan.pushTable(); //Pop fake scope
-            std::cout<<"Pushed fake scope\n";
             $$->reserve(8);
             $$->push_back($1); 
-            //std::cout<<"Inside stmt\n"; 
           } 
 	;
 testlist_safe // Used in: list_for
@@ -742,14 +737,15 @@ power // Used in: factor
           {
             //std::cout<<$2<<std::endl;
             if($2 != NULL){
-            std::cout<<"Inside power star_trailer\n";
+            //std::cout<<"Inside power star_trailer\n";
             //std::cout<<$1->getName();
             if(tableMan.ifInGlobal()){
               //if(tableMan.ifFuncEntryExists(identName)){
                 //Ast* tempSuite = tableMan.getCurrentTable()->getFuncEntry(identName);
                 //tableMan.pushTable();
+                //std::cout<<$1->getDataType()<<std::endl;
                 eval($1);
-                std::cout<<"Evaluated suite node on call\n";
+                //std::cout<<"Evaluated suite node on call\n";
                 //tableMan.popTable(); //Nested functions won't work here I think
               //}
               //else{
@@ -782,18 +778,11 @@ atom // Used in: power
 	| BACKQUOTE testlist1 BACKQUOTE
 	| NAME 
           { 
-            //if(symTab.ifExists($1)){
-            //std::cout<<"Current Vairable in atom"<<$1<<std::endl;
+              //tableMan.getCurrentTable()->displayTable();
             if(tableMan.getCurrentTable()->ifExists($1)){
-              //$$ = symTab.lookUp($1, count); count++;
               $$ = tableMan.getCurrentTable()->lookUp($1, count); count++;
-              //std::cout<<"In atom="<<$$->getNumber()<<std::endl;
-              //$$ = new AstNumber('K',count, ); count++; 
+              //std::cout<<"In atom: "<<$$->getNodetype()<<std::endl;
             }
-            //else if(tableMan.ifFuncEntryExists($1)){
-              //Function exists already
-              //std::cout<<"Hello in exists\n";
-            //}
             else{
               if(pFlag){
                 //std::cout<<"NameError: name "<<$1<<" is not defined\n";

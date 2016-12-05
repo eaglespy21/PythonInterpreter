@@ -16,6 +16,7 @@ public:
   void modifyEntry(double v, std::string n);
   SymbolTable(): entryList(){
   }
+  void displayTable();
 private:
   SymbolTable(const SymbolTable&);
   SymbolTable& operator=(const SymbolTable&);

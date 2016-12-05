@@ -6,16 +6,17 @@ TableManager& TableManager:: getInstance(){
 }
 
 void TableManager::pushTable(){
-  std::cout<<"Pushed Table\n";
+  //std::cout<<"Pushed Table\n";
   tableList.push_back(new SymbolTable);
-  std::cout<<tableList.size()<<std::endl;
+  //std::cout<<tableList.size()<<std::endl;
 }
 void TableManager::popTable(){
-  std::cout<<"Popped table\n";
+  //std::cout<<"Popped table\n";
   //Maybe delete symbolTable instance here to avoid memory leaks? 
   tableList.pop_back();
 }
 SymbolTable* TableManager::getCurrentTable(){
+  //std::cout<<"Number of tables ="<<tableList.size()<<std::endl;
   return tableList.back();
 }
 bool TableManager::ifInGlobal(){
