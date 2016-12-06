@@ -69,18 +69,20 @@ double eval(Ast *a) {
             tempVec = a->getNodes();
             //eval(tempVec->at(2));
             //std::cout<<"Size of tempVec "<<tempVec->size()<<std::endl;
+            //tableMan.pushTable();
             for( int i = tempVec->size()-1;i>=0;i--){
-              //std::cout<<tempVec->at(i)->getNodetype()<<std::endl;        
+              //std::cout<<tempVec->at(i)->getDataType()<<std::endl;        
               //std::cout<<i<<tempVec->at(i)<<std::endl;
                 //std::cout<<"Hello\n";
               if(tableMan.ifInGlobal() && tempVec->at(i)->getNodetype() == 'Q'){
                 std::cout<<eval(tempVec->at(i))<<std::endl;
               }
-              else{
+              else{ //if(tempVec->at(i)->getNodetype() != '\0'){
                 //std::cout<<"Hello\n";
                 eval(tempVec->at(i));
               }
             }
+            //tableMan.popTable();
             break;
   case 'A':
           //Evaluate assignment node
@@ -90,10 +92,12 @@ double eval(Ast *a) {
           break;
   case 'C': 
           //Evaluate Call Node
-          suiteTemp = tableMan.getCurrentTable()->getFuncEntry(a->getName());
-          tableMan.pushTable();
+          //std::cout<<"Evaluating nested function:"<<a->getName()<<std::endl;
+          //tableMan.getCurrentTable()->displayTable();
+          suiteTemp = tableMan.getCurrentTable()->lookUp(a->getName(),111);
+          //tableMan.pushTable();
           eval(suiteTemp);
-          tableMan.popTable();
+          //tableMan.popTable();
           //The not found string in the getFuncEntry function
           break;
   default: //std::cout << "NameError: identifier is not defined"//"internal error: bad node "

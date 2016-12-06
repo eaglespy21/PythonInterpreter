@@ -123,6 +123,7 @@ funcdef // Used in: decorated, compound_stmt
 	: DEF NAME parameters COLON suite 
           {
             tableMan.getCurrentTable()->insertFuncDef($2, $5);
+            //std::cout<<"Inserted function: "<<$2<<std::endl;
           } 
 	;
 parameters // Used in: funcdef
@@ -157,8 +158,8 @@ fplist // Used in: fpdef
 	: fpdef star_fpdef_notest
 	;
 stmt // Used in: pick_NEWLINE_stmt, plus_stmt
-	: simple_stmt
-	| compound_stmt
+	: simple_stmt {}
+	| compound_stmt {}
 	;
 simple_stmt // Used in: single_input, stmt, suite
 	: small_stmt small_stmt_STAR_OR_SEMI NEWLINE
@@ -232,7 +233,7 @@ expr_stmt // Used in: small_stmt
           }
 	;
 pick_yield_expr_testlist // Used in: expr_stmt, star_EQUAL
-	: yield_expr
+	: yield_expr {}
 	| testlist
 	;
 star_EQUAL // Used in: expr_stmt, star_EQUAL
@@ -266,7 +267,7 @@ star_EQUAL // Used in: expr_stmt, star_EQUAL
               else { tempType = "Float"; }
               $$ = new AstAssignmentNode('A', count, identName, tempType); //Change to tempType later
           }
-	| %empty
+	| %empty {}
 	;
 augassign // Used in: expr_stmt
 	: PLUSEQUAL { eAdd = true;}
@@ -290,7 +291,7 @@ print_stmt // Used in: small_stmt
             //std::cout<<"Type Print node points to: "<<$2->getNodetype()<<std::endl;
             if(tableMan.ifInGlobal()) { std::cout<<eval($2)<<std::endl; } 
           }
-	| PRINT RIGHTSHIFT test opt_test_2
+	| PRINT RIGHTSHIFT test opt_test_2 {}
 	;
 opt_test // Used in: print_stmt
 	: test star_COMMA_test 
@@ -299,7 +300,7 @@ opt_test // Used in: print_stmt
             //std::cout << "= "<<eval($1) <<std::endl;
             //treeFree($1);
           }
-	| %empty
+	| %empty {}
 	;
 opt_test_2 // Used in: print_stmt
 	: plus_COMMA_test
@@ -330,7 +331,7 @@ return_stmt // Used in: flow_stmt
             $$ = new AstPrintNode('Q', count, $2); count++;
             if(tableMan.ifInGlobal()) { std::cout<<eval($2)<<std::endl; }       
           }     
-	| RETURN
+	| RETURN {}
 	;
 yield_stmt // Used in: flow_stmt
 	: yield_expr
@@ -491,6 +492,7 @@ suite // Used in: funcdef, if_stmt, star_ELIF, while_stmt, for_stmt,
             //std::cout<<"created a suite node\n";
             //std::cout<<"Popped fake scope\n";
             //tableMan.getCurrentTable()->displayTable();
+            
             tableMan.popTable();
           }
 	;
@@ -743,25 +745,13 @@ power // Used in: factor
           }
 	| atom star_trailer 
           {
-            //std::cout<<$2<<std::endl;
             if($2 != NULL){
-            //std::cout<<"Inside power star_trailer\n";
-            //std::cout<<$1->getName();
-            if(tableMan.ifInGlobal()){
-              //if(tableMan.ifFuncEntryExists(identName)){
-                //Ast* tempSuite = tableMan.getCurrentTable()->getFuncEntry(identName);
-                //tableMan.pushTable();
-                //std::cout<<$1->getDataType()<<std::endl;
+              if(tableMan.ifInGlobal()){
                 eval($1);
-                //std::cout<<"Evaluated suite node on call\n";
-                //tableMan.popTable(); //Nested functions won't work here I think
-              //}
-              //else{
-                //std::cout<<"Function not found\n";
-              //}
-           }
+            }
            else{
-             std::cout<<"Create call node\n";
+             $$ = new AstCallNode('C',count,globalName);
+             //std::cout<<"Created call node\n";
            } 
            }
           }
@@ -781,9 +771,9 @@ atom // Used in: power
             $$ = $2; 
             comingFromPar = true;
           }
-	| LSQB opt_listmaker RSQB
-	| LBRACE opt_dictorsetmaker RBRACE
-	| BACKQUOTE testlist1 BACKQUOTE
+	| LSQB opt_listmaker RSQB {}
+	| LBRACE opt_dictorsetmaker RBRACE {}
+	| BACKQUOTE testlist1 BACKQUOTE {}
 	| NAME 
           { 
               //tableMan.getCurrentTable()->displayTable();
@@ -828,11 +818,11 @@ opt_yield_test // Used in: atom
             //$$ = new AstNode('Z', count, $1, NULL); count++;  
             //std::cout<<"In pick_yield"<<$$<<std::endl; 
           }
-	| %empty
+	| %empty {}
 	;
 opt_listmaker // Used in: atom
 	: listmaker
-	| %empty
+	| %empty {}
 	;
 opt_dictorsetmaker // Used in: atom
 	: dictorsetmaker

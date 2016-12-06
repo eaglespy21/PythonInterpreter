@@ -59,6 +59,7 @@ bool TableManager::ifFuncEntryExists(std::string name){
       return false;
     }
   }
+  return false;
 }
 
 bool TableManager::ifExists(std::string name){

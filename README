@@ -6,7 +6,7 @@ Project no: 6
 Project due date: 12-5-2016
 
 Project description: Python interpreter that interprets functions and arithmetics operations. Activation records created for functions in the symbol table. 
-Table Manager implemented that pushes and pops scopes for functions and creates chain of symbol tables. Print nodes, assignment nodes and call nodes created from lastproject.  
+Table Manager implemented that pushes and pops scopes for functions and creates chain of symbol tables. Print nodes, assignment nodes and call nodes created new, from lastproject.  
 
 Difficulties: Changing the last project to include parsing of functions. 
 In theory and logically the project was easy to understand but implementing it was much harder especially because of the python grammar. 
